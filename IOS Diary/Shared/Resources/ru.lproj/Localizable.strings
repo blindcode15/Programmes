@@ -1,0 +1,11 @@
+"APP_TITLE" = "Дневник настроения";
+"NEW_ENTRY" = "Новая запись";
+"SAVE" = "Сохранить";
+"CANCEL" = "Отмена";
+"WHAT_HAPPENED" = "Коротко: что произошло?";
+"REMINDER_TITLE" = "Как настроение сегодня?";
+"REMINDER_BODY" = "Отметьте настроение за секунду.";
+"EXPORT_JSON" = "Экспорт JSON";
+"EXPORT_CSV" = "Экспорт CSV";
+"NOTHING" = "Ничего";
+"FINE_TUNE" = "Точно";
