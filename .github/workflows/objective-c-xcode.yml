@@ -1,30 +1,67 @@
-name: Xcode - Build and Analyze
+name: iOS - Build (XcodeGen)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
-    name: Build and analyse default scheme using xcodebuild command
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set Default Scheme
+
+      # 1) Ставим XcodeGen и xcpretty
+      - name: Install tools
         run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: Build
-        env:
-          scheme: ${{ 'default' }}
+          brew update
+          brew install xcodegen xcpretty
+
+      # 2) Генерим .xcodeproj из project.yml (лежит в корне репозитория)
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      # 3) Находим имя проекта и первую доступную схему автоматически
+      - name: Detect project & scheme
+        id: detect
+        shell: bash
         run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}
+          set -euo pipefail
+          PROJ=$(ls -1 *.xcodeproj | head -n1)
+          if [[ -z "$PROJ" ]]; then
+            echo "No .xcodeproj generated"; exit 1
+          fi
+          echo "Detected project: $PROJ"
+
+          # Выводим схемы и берём первую
+          SCHEMES_JSON=$(xcodebuild -list -json -project "$PROJ")
+          SCHEME=$(python3 - <<'PY'
+import json,sys
+j=json.load(sys.stdin)
+schemes=j.get("project",{}).get("schemes",[])
+print(schemes[0] if schemes else "")
+PY
+)
+          if [[ -z "$SCHEME" ]]; then
+            echo "No shared schemes found. Open the project locally and share a scheme (Manage Schemes → Shared)."
+            exit 1
+          fi
+          echo "Detected scheme: $SCHEME"
+
+          echo "project=$PROJ" >> $GITHUB_OUTPUT
+          echo "scheme=$SCHEME" >> $GITHUB_OUTPUT
+
+      # 4) Сборка под симулятор (без кодсайнинга)
+      - name: Build (Debug)
+        run: |
+          xcodebuild \
+            -project "${{ steps.detect.outputs.project }}" \
+            -scheme "${{ steps.detect.outputs.scheme }}" \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -configuration Debug \
+            -quiet \
+            build | xcpretty
