@@ -10,6 +10,13 @@
 				"$swift"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Open Windows Preview",
+			"type": "shell",
+			"command": "start .\\PreviewWeb\\index.html",
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }

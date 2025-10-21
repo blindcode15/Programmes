@@ -11,8 +11,13 @@ public final class MoodStore: ObservableObject {
 
     @Published public private(set) var entries: [MoodEntry] = []
 
-    private var defaults: UserDefaults? {
-        UserDefaults(suiteName: appGroupID)
+    private var defaults: UserDefaults {
+        // If App Group is not available (e.g., unsigned sideload), fall back to standard defaults
+        if let d = UserDefaults(suiteName: appGroupID) {
+            return d
+        } else {
+            return .standard
+        }
     }
 
     private init() {
@@ -32,14 +37,14 @@ public final class MoodStore: ObservableObject {
 
     // MARK: - Fine tune flag
     public func triggerFineTuneSheet() {
-        defaults?.set(true, forKey: fineTuneFlagKey)
+    defaults.set(true, forKey: fineTuneFlagKey)
     }
 
     /// Consumes the flag and returns whether to show the sheet.
     public func consumeFineTuneFlag() -> Bool {
-        let flag = defaults?.bool(forKey: fineTuneFlagKey) ?? false
+        let flag = defaults.bool(forKey: fineTuneFlagKey)
         if flag {
-            defaults?.set(false, forKey: fineTuneFlagKey)
+            defaults.set(false, forKey: fineTuneFlagKey)
         }
         return flag
     }
@@ -66,7 +71,7 @@ public final class MoodStore: ObservableObject {
 
     // MARK: - Persistence
     private func load() {
-        guard let data = defaults?.data(forKey: entriesKey) else { return }
+        guard let data = defaults.data(forKey: entriesKey) else { return }
         if let decoded = try? JSONDecoder().decode([MoodEntry].self, from: data) {
             self.entries = decoded
         }
@@ -75,7 +80,7 @@ public final class MoodStore: ObservableObject {
     private func save(_ list: [MoodEntry]) {
         entries = list.sorted { $0.date < $1.date }
         if let data = try? JSONEncoder().encode(entries) {
-            defaults?.set(data, forKey: entriesKey)
+            defaults.set(data, forKey: entriesKey)
         }
     }
 }

@@ -1,0 +1,53 @@
+:root{
+  --accent:#3382f5;
+  --bg:#0b0c0f;
+  --card:#12141a;
+  --text:#e6e7ea;
+  --muted:#9aa3b2;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color:var(--text); background:linear-gradient(180deg, #0f1218, #0b0c0f);
+}
+.page{ max-width:900px; margin:24px auto; padding:0 16px; }
+
+.widget{
+  background:var(--card); border-radius:12px; padding:16px; box-shadow:0 8px 30px rgba(0,0,0,.35);
+}
+.widget-row{ display:flex; gap:8px; align-items:center; }
+.emoji{
+  font-size:24px; padding:10px 12px; border-radius:10px; border:1px solid #222531; background:#171a22; color:#fff; cursor:pointer;
+}
+.emoji:hover{ border-color:#2b3344 }
+.emoji.fine{ background:#1a2130 }
+.last-value{ margin-top:10px; font-size:12px; color:var(--muted) }
+
+.list{ margin-top:16px; display:grid; gap:12px }
+.entry{
+  background:var(--card); border-radius:10px; padding:12px; border:1px solid #1b1f2a;
+}
+.entry .date{ color:var(--muted); font-size:12px }
+
+/* Sheet */
+.sheet-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.4); opacity:0; pointer-events:none; transition:.2s opacity; }
+.sheet{
+  position:fixed; left:0; right:0; bottom:-60%; height:35vh; background:#12141a; border-radius:12px 12px 0 0; border-top:1px solid #1b1f2a;
+  box-shadow:0 -10px 30px rgba(0,0,0,.4); padding:16px; transition:.25s bottom; max-height:70vh;
+}
+.sheet.open{ bottom:0 }
+.sheet-backdrop.open{ opacity:1; pointer-events:auto }
+.sheet-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px }
+.sheet-header h2{ margin:0; font-size:16px }
+.sheet-header .value{ color:var(--muted); font-size:14px }
+.sheet-body{ display:grid; gap:12px }
+.sheet-body input[type="range"]{ accent-color:var(--accent); }
+.sheet-body input[type="text"]{ padding:10px 12px; border-radius:10px; border:1px solid #1b1f2a; background:#0f1218; color:#fff; }
+.sheet-footer{ display:flex; gap:10px; justify-content:flex-end; margin-top:8px }
+.btn{ padding:10px 14px; border-radius:10px; border:1px solid #2a3142; background:#161a24; color:#fff; cursor:pointer }
+.btn.primary{ background:var(--accent); border-color:transparent; color:#fff }
+
+/* Toast */
+.toast{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(20px); background:#12141a; color:#fff; border:1px solid #1b1f2a; padding:10px 14px; border-radius:10px; opacity:0; transition:.25s; }
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }

@@ -1,0 +1,58 @@
+name: iOS Device IPA (unsigned for sideload)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'App/**'
+      - 'Shared/**'
+      - 'Widget/**'
+      - 'project.yml'
+      - '.github/workflows/ios-device-ipa.yml'
+
+jobs:
+  build-ipa:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: |
+          brew update
+          brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build device .app (unsigned)
+        run: |
+          set -e
+          xcodebuild \
+            -project MoodDiary.xcodeproj \
+            -scheme MoodDiary \
+            -sdk iphoneos \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build \
+            | xcpretty -c || true
+
+      - name: Locate built .app
+        id: locate
+        run: |
+          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -type d -name "MoodDiary.app" | head -n 1)
+          echo "app_path=$APP_PATH" >> $GITHUB_OUTPUT
+
+      - name: Package to IPA (unsigned)
+        run: |
+          mkdir -p Payload
+          cp -R "${{ steps.locate.outputs.app_path }}" Payload/
+          zip -qry MoodDiary-unsigned.ipa Payload
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MoodDiary-unsigned-ipa
+          path: MoodDiary-unsigned.ipa
