@@ -9,6 +9,10 @@ jobs:
     name: Build MoodDiary (iOS 17)
     runs-on: macos-14
     steps:
+      - name: Select Xcode 16
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.*'
       - name: Checkout
         uses: actions/checkout@v4
 
