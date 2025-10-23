@@ -43,7 +43,9 @@ targets:
       - path: App
         excludes:
           - AppIntents.swift
-      - Shared
+      - path: Shared
+        excludes:
+          - Intents/**
     resources:
       - App/Resources
       - Shared/Resources
