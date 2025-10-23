@@ -8,7 +8,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - App
+      - path: App
+        excludes:
+          - AppIntents.swift
       - Shared
     resources:
       - App/Resources
@@ -38,7 +40,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - App
+      - path: App
+        excludes:
+          - AppIntents.swift
       - Shared
     resources:
       - App/Resources
