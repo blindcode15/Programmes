@@ -37,7 +37,15 @@ struct OpenFineTuneIntent: AppIntent {
 // MARK: - App Shortcuts
 struct MoodShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
-        AppShortcut(intent: QuickMoodIntent(value: 5), phrases: ["Save mood in \(.application)"]) +
-        AppShortcut(intent: OpenFineTuneIntent(), phrases: ["Fine tune mood in \(.application)"])
+        [
+            AppShortcut(
+                intent: QuickMoodIntent(value: 5),
+                phrases: ["Save mood in \(.application)"]
+            ),
+            AppShortcut(
+                intent: OpenFineTuneIntent(),
+                phrases: ["Fine tune mood in \(.application)"]
+            )
+        ]
     }
 }
