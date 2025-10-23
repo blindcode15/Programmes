@@ -28,8 +28,11 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
-      - name: Build for iOS Simulator
+      - name: Build for iOS Simulator (capture full log)
         run: |
+          set +e
+          set -o pipefail
+          export NSUnbufferedIO=YES
           xcodebuild \
             -project MoodDiary.xcodeproj \
             -scheme MoodDiary \
@@ -37,7 +40,16 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
             -configuration Debug \
             build \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-sim.log
+          CODE=${PIPESTATUS[0]}
+          echo "xcodebuild exit code: $CODE"
+          exit $CODE
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-sim-log
+          path: build-sim.log
       - name: Record short simulator video (app launch)
         run: |
           set -euo pipefail
