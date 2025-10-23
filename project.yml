@@ -31,6 +31,7 @@ targets:
       - path: Shared
         excludes:
           - Helpers/NotificationHelper.swift
+          - Store/MoodStore.swift
     resources:
       - Shared/Resources
     settings:
