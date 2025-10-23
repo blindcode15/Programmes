@@ -59,7 +59,7 @@ targets:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - Tests
+      - path: Tests/ScreenshotsTests.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.mood.tests
