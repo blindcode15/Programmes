@@ -12,6 +12,8 @@ targets:
         excludes:
           - AppIntents.swift
           - FineTuneSheet.swift
+          - Data/MoodEntry.swift
+          - Data/MoodStore.swift
       - Shared
     resources:
       - App/Resources
@@ -51,6 +53,8 @@ targets:
         excludes:
           - AppIntents.swift
           - FineTuneSheet.swift
+          - Data/MoodEntry.swift
+          - Data/MoodStore.swift
       - path: Shared
         excludes:
           - Intents/**
