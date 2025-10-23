@@ -32,6 +32,7 @@ targets:
         excludes:
           - Helpers/NotificationHelper.swift
           - Store/MoodStore.swift
+          - Intents/AppIntents.swift
     resources:
       - Shared/Resources
     settings:
