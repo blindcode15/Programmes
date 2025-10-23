@@ -25,9 +25,13 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: Show available schemes
+        run: |
+          xcodebuild -list -project MoodDiary.xcodeproj
+
       - name: Build device .app (unsigned)
         run: |
-          set -e
+          set -euo pipefail
           xcodebuild \
             -project MoodDiary.xcodeproj \
             -scheme MoodDiary \
@@ -36,13 +40,20 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build \
-            | xcpretty -c || true
+            build
 
       - name: Locate built .app
         id: locate
         run: |
-          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -type d -name "MoodDiary.app" | head -n 1)
+          SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphoneos -configuration Release -showBuildSettings)
+          TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
+          echo "TARGET_BUILD_DIR=$TARGET_BUILD_DIR"
+          APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "App not found at $APP_PATH" >&2
+            ls -la "$TARGET_BUILD_DIR" || true
+            exit 1
+          fi
           echo "app_path=$APP_PATH" >> $GITHUB_OUTPUT
 
       - name: Package to IPA (unsigned)
