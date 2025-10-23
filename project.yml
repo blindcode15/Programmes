@@ -11,6 +11,7 @@ targets:
       - path: App
         excludes:
           - AppIntents.swift
+          - FineTuneSheet.swift
       - Shared
     resources:
       - App/Resources
@@ -49,6 +50,7 @@ targets:
       - path: App
         excludes:
           - AppIntents.swift
+          - FineTuneSheet.swift
       - path: Shared
         excludes:
           - Intents/**
