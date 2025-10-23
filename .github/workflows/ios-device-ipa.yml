@@ -44,7 +44,14 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build
+            build \
+            | tee build-apponly.log
+      - name: Upload build log (AppOnly)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-apponly
+          path: build-apponly.log
 
       - name: Locate built .app
         id: locate
