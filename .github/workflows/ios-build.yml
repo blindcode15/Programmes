@@ -37,6 +37,29 @@ jobs:
             -configuration Debug \
             build \
             CODE_SIGNING_ALLOWED=NO
+      - name: Record short simulator video (app launch)
+        run: |
+          set -euo pipefail
+          # Determine simulator build output path
+          SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphonesimulator -configuration Debug -showBuildSettings)
+          TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
+          APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
+          echo "APP_PATH=$APP_PATH"
+          # Boot simulator and install
+          xcrun simctl boot 'iPhone 15' || true
+          xcrun simctl install booted "$APP_PATH"
+          # Start recording, launch app, wait a few seconds, stop
+          xcrun simctl io booted recordVideo --codec=h264 app-demo.mp4 &
+          REC_PID=$!
+          xcrun simctl launch booted com.yourcompany.mood || true
+          sleep 8
+          kill $REC_PID || true
+      - name: Upload simulator video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-video
+          path: app-demo.mp4
       - name: Run UI snapshot tests
         run: |
           xcodebuild \
