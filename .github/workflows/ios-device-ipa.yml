@@ -33,12 +33,12 @@ jobs:
         run: |
           xcodebuild -list -project MoodDiary.xcodeproj
 
-      - name: Build device .app (unsigned)
+      - name: Build device .app (unsigned, AppOnly)
         run: |
           set -euo pipefail
           xcodebuild \
             -project MoodDiary.xcodeproj \
-            -scheme MoodDiary \
+            -scheme MoodDiaryAppOnly \
             -sdk iphoneos \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
@@ -49,10 +49,10 @@ jobs:
       - name: Locate built .app
         id: locate
         run: |
-          SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphoneos -configuration Release -showBuildSettings)
+          SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiaryAppOnly -sdk iphoneos -configuration Release -showBuildSettings)
           TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
           echo "TARGET_BUILD_DIR=$TARGET_BUILD_DIR"
-          APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
+          APP_PATH="$TARGET_BUILD_DIR/MoodDiaryAppOnly.app"
           if [ ! -d "$APP_PATH" ]; then
             echo "App not found at $APP_PATH" >&2
             ls -la "$TARGET_BUILD_DIR" || true
@@ -64,10 +64,10 @@ jobs:
         run: |
           mkdir -p Payload
           cp -R "${{ steps.locate.outputs.app_path }}" Payload/
-          zip -qry MoodDiary-unsigned.ipa Payload
+          zip -qry MoodDiaryAppOnly-unsigned.ipa Payload
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MoodDiary-unsigned-ipa
-          path: MoodDiary-unsigned.ipa
+          name: MoodDiaryAppOnly-unsigned-ipa
+          path: MoodDiaryAppOnly-unsigned.ipa
