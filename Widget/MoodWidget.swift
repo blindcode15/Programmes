@@ -44,11 +44,11 @@ struct MoodWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 8) {
-                ControlWidgetButton(action: QuickMoodIntent(value: 1)) { Text("😞") }
-                ControlWidgetButton(action: QuickMoodIntent(value: 4)) { Text("😐") }
-                ControlWidgetButton(action: QuickMoodIntent(value: 7)) { Text("🙂") }
-                ControlWidgetButton(action: QuickMoodIntent(value: 9)) { Text("😄") }
-                ControlWidgetButton(action: OpenFineTuneIntent()) { Image(systemName: "slider.horizontal.3") }
+                Button(intent: QuickMoodIntent(value: 1)) { Text("😞") }
+                Button(intent: QuickMoodIntent(value: 4)) { Text("😐") }
+                Button(intent: QuickMoodIntent(value: 7)) { Text("🙂") }
+                Button(intent: QuickMoodIntent(value: 9)) { Text("😄") }
+                Button(intent: OpenFineTuneIntent()) { Image(systemName: "slider.horizontal.3") }
             }
             .font(.title)
 
