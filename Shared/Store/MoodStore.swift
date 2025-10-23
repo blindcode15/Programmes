@@ -65,9 +65,11 @@ public final class MoodStore: ObservableObject {
     }
 
     // MARK: - Notifications
+    #if !WIDGET_EXT
     public func scheduleDailyReminder(hour: Int = 20, minute: Int = 0) {
         NotificationHelper.scheduleDaily(hour: hour, minute: minute)
     }
+    #endif
 
     // MARK: - Persistence
     private func load() {

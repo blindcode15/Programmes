@@ -28,7 +28,9 @@ targets:
     platform: iOS
     sources:
       - Widget
-      - Shared
+      - path: Shared
+        excludes:
+          - Helpers/NotificationHelper.swift
     resources:
       - Shared/Resources
     settings:
@@ -36,6 +38,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.mood.widget
         INFOPLIST_FILE: Widget/Info.plist
         CODE_SIGN_ENTITLEMENTS: Widget/MoodWidget.entitlements
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) WIDGET_EXT"
   MoodDiaryAppOnly:
     type: application
     platform: iOS
