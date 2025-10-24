@@ -10,11 +10,17 @@ struct EmotionTaxonomyView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
-                GroupBox("Разовые (импульсивные)") {
-                    ChipsGrid(EmotionTaxonomy.phasic)
+                Card {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Разовые (импульсивные)").font(.headline)
+                        ChipsGrid(EmotionTaxonomy.phasic)
+                    }
                 }
-                GroupBox("Постоянные (фоновые)") {
-                    ChipsGrid(EmotionTaxonomy.tonic)
+                Card {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Постоянные (фоновые)").font(.headline)
+                        ChipsGrid(EmotionTaxonomy.tonic)
+                    }
                 }
 
                 Text("Примечание: классификация упрощена и вдохновлена психо- и нейробиологическими подходами. Отслеживайте и интерпретируйте с бережностью к себе.")
@@ -43,6 +49,4 @@ private struct ChipsGrid: View {
     }
 }
 
-#Preview {
-    EmotionTaxonomyView()
-}
+// Preview removed for CI stability
