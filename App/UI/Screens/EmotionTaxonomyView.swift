@@ -36,7 +36,7 @@ private struct ChipsGrid: View {
     let items: [String]
     private var columns: [GridItem] { [GridItem(.adaptive(minimum: 100), spacing: 8)] }
     var body: some View {
-        LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+        LazyVGrid(columns: columns, spacing: 8) {
             ForEach(items, id: \.self) { item in
                 Text(item)
                     .font(.subheadline)
