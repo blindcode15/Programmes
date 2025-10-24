@@ -11,9 +11,13 @@ struct TipsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
+                NavigationLink(destination: EmotionTaxonomyView()) {
+                    Card { HStack { Image(systemName: "list.bullet.rectangle"); Text("Таксономия эмоций") ; Spacer(); Image(systemName: "chevron.right").foregroundStyle(.secondary) } }
+                }
+
                 if let latest = store.entries.last?.value {
                     let trend = AnalyticsEngine(entries: store.entries).trend7d()
-                    Text("Сегодняшний срез: \(latest)/10").font(.headline)
+                    Text("Сегодняшний срез: \(latest)/100").font(.headline)
                     ForEach(tipsEngine.advice(latest: latest, trend: trend), id: \.self) { t in
                         Card { Text(t) }
                     }

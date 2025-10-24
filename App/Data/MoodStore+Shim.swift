@@ -5,8 +5,8 @@ public extension MoodStore {
     // Do not clash with internal private load(); give a unique name
     func snapshot() -> [MoodEntry] { entries }
 
-    func append(value: Int, note: String?) {
-        addQuick(value: value, note: note)
+    func append(value: Int, note: String?, emotion: Emotion? = nil) {
+        addQuick(value: value, note: note, emotion: emotion)
     }
 
     func removeLast() {

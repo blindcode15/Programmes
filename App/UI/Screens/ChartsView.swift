@@ -35,7 +35,7 @@ struct ChartsView: View {
                 )
             }
             .frame(height: 220)
-            .chartYScale(domain: 0...10)
+            .chartYScale(domain: 0...100)
 
             Text("Heatmap by hour")
                 .font(.headline)

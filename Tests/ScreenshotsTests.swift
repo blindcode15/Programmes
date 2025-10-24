@@ -48,7 +48,7 @@ final class ScreenshotsTests: XCTestCase {
         var items: [MoodEntry] = []
         let cal = Calendar.current
         let now = Date()
-        for i in 0..<30 {
+    for i in 0..<30 {
             let day = cal.date(byAdding: .day, value: -i, to: now)!
             // three entries per day at different hours
             let hours = [9, 14, 21]
@@ -57,10 +57,11 @@ final class ScreenshotsTests: XCTestCase {
                 comps.hour = h
                 comps.minute = 10 * idx
                 let d = cal.date(from: comps) ?? day
-                // pseudo curve 2..9
-                let base = 5 + Int(3 * sin(Double(i)/4.0))
-                let val = max(1, min(9, base + (idx-1)))
-                items.append(MoodEntry(date: d, value: val, note: idx == 1 ? "Note \(i)" : nil))
+                // pseudo curve around 30..90 on 0..100 scale
+                let base = 55 + Int(25 * sin(Double(i)/4.0))
+                let val = max(5, min(95, base + (idx-1) * 5))
+                let emotion: Emotion = (val >= 70) ? .joy : (val >= 50 ? .anxiety : (val >= 35 ? .anger : .sadness))
+                items.append(MoodEntry(date: d, value: val, note: idx == 1 ? "Note \(i)" : nil, emotion: emotion))
             }
         }
         MoodStore.shared.setEntries(items)

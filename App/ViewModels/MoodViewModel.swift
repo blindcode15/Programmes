@@ -12,14 +12,14 @@ final class MoodViewModel: ObservableObject {
         // listen if needed
     }
 
-    func quickAdd(value: Int) {
-        MoodStore.shared.append(value: value, note: nil)
+    func quickAdd(value: Int, emotion: Emotion) {
+        MoodStore.shared.append(value: value, note: nil, emotion: emotion)
         lastAddedId = MoodStore.shared.latest()?.id
         startUndoTimer()
     }
 
-    func fineAdd(value: Int, note: String?) {
-        MoodStore.shared.append(value: value, note: note)
+    func fineAdd(value: Int, note: String?, emotion: Emotion?) {
+        MoodStore.shared.append(value: value, note: note, emotion: emotion)
         lastAddedId = MoodStore.shared.latest()?.id
         startUndoTimer()
     }

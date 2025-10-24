@@ -15,7 +15,7 @@ struct QuickMoodIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        let clamped = max(0, min(10, value))
+        let clamped = max(0, min(100, value))
         MoodStore.shared.addQuick(value: clamped)
         return .result()
     }

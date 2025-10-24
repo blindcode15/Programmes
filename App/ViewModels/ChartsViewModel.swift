@@ -9,7 +9,7 @@ final class ChartsViewModel: ObservableObject {
     var avg: Double { engine.avg(period: map(selected)) }
     var median: Double { engine.median(period: map(selected)) }
     var minValue: Int { engine.minValue(period: map(selected)) ?? 0 }
-    var maxValue: Int { engine.maxValue(period: map(selected)) ?? 10 }
+    var maxValue: Int { engine.maxValue(period: map(selected)) ?? 100 }
 
     func series() -> [MoodEntry] {
         filter(MoodStore.shared.entries, for: selected)

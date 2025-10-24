@@ -8,7 +8,7 @@ struct HistoryView: View {
             HStack(spacing: 12) {
                 Text(e.emoji).font(.largeTitle)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("\(e.value)/10").font(.headline)
+                    Text("\(e.value)/100\(e.emotion != nil ? " · \(e.emotion!.display)" : "")").font(.headline)
                     if let note = e.note, !note.isEmpty { Text(note).font(.subheadline).foregroundStyle(.secondary) }
                     Text(e.date, style: .date).font(.caption).foregroundStyle(.secondary)
                 }

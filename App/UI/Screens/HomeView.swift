@@ -11,8 +11,8 @@ struct HomeView: View {
         ScrollView {
             VStack(spacing: 16) {
                 Card {
-                    EmojiQuickRow(onQuick: { value in
-                        vm.quickAdd(value: value)
+                    EmojiQuickRow(onQuick: { value, emotion in
+                        vm.quickAdd(value: value, emotion: emotion)
                         showUndoTemporarily()
                     }, onFine: { showFineTune = true })
                 }
@@ -22,7 +22,8 @@ struct HomeView: View {
                         HStack(alignment: .center, spacing: 12) {
                             Text(last.emoji).font(.largeTitle)
                             VStack(alignment: .leading) {
-                                Text("Последнее: \(last.value)/10")
+                                let emo = last.emotion?.display ?? ""
+                                Text("Последнее: \(last.value)/100 \(emo.isEmpty ? "" : "· \(emo)")")
                                     .font(.headline)
                                 Text(last.date, style: .date)
                                     .font(.caption).foregroundStyle(.secondary)

@@ -41,8 +41,8 @@ public struct AnalyticsEngine {
         let a = last7.isEmpty ? .nan : Double(last7.map{ $0.value }.reduce(0,+)) / Double(last7.count)
         let b = prev7.isEmpty ? .nan : Double(prev7.map{ $0.value }.reduce(0,+)) / Double(prev7.count)
         let delta = (a.isNaN || b.isNaN) ? 0 : (a - b)
-        if delta >= 1.0 { return .up(delta) }
-        if delta <= -1.0 { return .down(delta) }
+        if delta >= 5.0 { return .up(delta) } // widen threshold for 0..100 scale
+        if delta <= -5.0 { return .down(delta) }
         return .flat(delta)
     }
 
@@ -55,6 +55,18 @@ public struct AnalyticsEngine {
             map[dayDiff, default: [:]][hour, default: []].append(e)
         }
         return map
+    }
+
+    public func functionDistribution(period: Period) -> [EmotionFunction: Int] {
+        let filtered = filter(entries: entries, for: period)
+        var counts: [EmotionFunction: Int] = [:]
+        for e in filtered {
+            if let emo = e.emotion {
+                let f = emo.function
+                counts[f, default: 0] += 1
+            }
+        }
+        return counts
     }
 
     private func filter(entries: [MoodEntry], for period: Period) -> [MoodEntry] {
