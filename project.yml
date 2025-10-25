@@ -11,6 +11,7 @@ targets:
       - path: App
         excludes:
           - AppIntents.swift
+          - FineTuneSheet.swift
           - Data/MoodEntry.swift
           - Data/MoodStore.swift
           - UI/Screens/HistoryView.swift
