@@ -44,5 +44,4 @@ struct FineTuneSheet: View {
         .padding()
     }
 }
-
-#Preview { FineTuneSheet(isPresented: .constant(true)) }
+// Preview removed for CI stability

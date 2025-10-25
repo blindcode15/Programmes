@@ -51,5 +51,4 @@ struct ContentView: View {
         .onChange(of: selectedTab) { _ in Haptics.fire(.light) }
     }
 }
-
-#Preview { ContentView().environmentObject(MoodStore.shared) }
+// Preview removed for CI stability
