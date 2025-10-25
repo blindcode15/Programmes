@@ -107,12 +107,12 @@ jobs:
           else
             echo "App not found at $APP_PATH (build may have failed). Will record home screen."
           fi
-          # Start recording (force overwrite), run for ~18s
+          # Start recording (force overwrite), run for ~22s for more motion
           xcrun simctl io "$DEVICE" recordVideo --codec=h264 --force "$VIDEO" &
           REC_PID=$!
           # Launch app in demo mode if we have a bundle; otherwise just wait on SpringBoard
           xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
-          SECONDS=18
+          SECONDS=22
           echo "Recording for $SECONDS seconds..."
           sleep $SECONDS
           kill $REC_PID 2>/dev/null || true

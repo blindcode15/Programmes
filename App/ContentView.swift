@@ -8,12 +8,19 @@ struct ContentView: View {
     @StateObject private var chartsVM = ChartsViewModel()
     @State private var showFineTune = false
     @State private var selectedTab: Int = 0
+    @State private var showThemeDebug = false
+    @State private var debugStateOverride: PersistentMoodState? = nil
+    @State private var debugColorScheme: ColorScheme? = nil
     private var palette: ThemePalette {
         let avg = AnalyticsEngine(entries: store.entries).avg(period: .week)
         let safe = avg.isNaN ? 50.0 : avg
-        return ThemePalette.forMood(safe, scheme: colorScheme)
+        if let ov = debugStateOverride {
+            return ThemePalette.fromState(ov, scheme: debugColorScheme ?? colorScheme)
+        }
+        return ThemePalette.forMood(safe, scheme: debugColorScheme ?? colorScheme)
     }
     @State private var demoTimer: Timer?
+    private let isDemo = ProcessInfo.processInfo.arguments.contains("DEMO_MODE")
 
     var body: some View {
         ZStack {
@@ -45,7 +52,20 @@ struct ContentView: View {
                 .presentationDetents([.fraction(0.4), .medium])
                 .modifier(PresentationCornerRadiusIfAvailable(radius: 16))
         }
+        .sheet(isPresented: $showThemeDebug) {
+            ThemeDebugView(stateOverride: $debugStateOverride, colorSchemeOverride: $debugColorScheme)
+                .presentationDetents([.fraction(0.4), .medium])
+                .modifier(PresentationCornerRadiusIfAvailable(radius: 16))
+        }
         .tint(palette.accent)
+        .preferredColorScheme(debugColorScheme)
+        .toolbar {
+            if isDemo {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Theme") { showThemeDebug = true }
+                }
+            }
+        }
         .task {
             if store.consumeFineTuneFlag() { showFineTune = true }
             _ = await NotificationHelper.requestAuthorization()
@@ -65,6 +85,10 @@ struct ContentView: View {
                     let emos: [Emotion] = [.joy, .anxiety, .anger, .sadness]
                     let emo = emos.randomElement()
                     MoodStore.shared.append(value: val, note: nil, emotion: emo)
+                    // flip theme override occasionally to show different visuals
+                    if step % 2 == 0 {
+                        debugStateOverride = PersistentMoodState.allCases.randomElement()
+                    }
                     step += 1
                 }
             }

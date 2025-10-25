@@ -23,6 +23,16 @@ public struct ThemePalette {
         let glow = b.opacity(0.6)
         return ThemePalette(accent: a, glow: glow, gradient: gradient, state: state)
     }
+
+    public static func fromState(_ state: PersistentMoodState, scheme: ColorScheme) -> ThemePalette {
+        let tones = state.tone
+        let colors = (scheme == .dark) ? tones.night : tones.day
+        let a = colors.first ?? .accentColor
+        let b = (colors.count > 1 ? colors[1] : a).opacity(0.9)
+        let gradient = LinearGradient(colors: [a, b], startPoint: .topLeading, endPoint: .bottomTrailing)
+        let glow = b.opacity(0.6)
+        return ThemePalette(accent: a, glow: glow, gradient: gradient, state: state)
+    }
 }
 
 public struct GlassCard: ViewModifier {

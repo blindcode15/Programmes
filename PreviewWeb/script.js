@@ -226,7 +226,7 @@
       const t = (e.value|0);
       const hue = (t/100)*120;
       return `
-      <div class="entry">
+      <div class="entry tilt">
         <div style="display:flex; align-items:center; gap:8px">
           <div style="font-size:20px">${emoji(t)}</div>
           <div style="flex:1">
@@ -237,6 +237,7 @@
         <div class="bar" style="margin-top:8px; background: linear-gradient(90deg, hsla(${hue},70%,55%,.9), hsla(${Math.max(0,hue-40)},70%,55%,.9)); width:${t}%;"></div>
       </div>`;
     }).join('');
+    attachTiltTo('.entry.tilt');
   }
   function filteredByRange(){
     const now = new Date();
@@ -444,10 +445,25 @@
     root.style.setProperty('--accent', pal.accent);
     root.style.setProperty('--bg', pal.bg);
     root.style.setProperty('--bg2', pal.bg2);
+    // compute surface/border/text based on day/night
+    if(STATE.night){
+      root.style.setProperty('--surface', 'rgba(255,255,255,0.05)');
+      root.style.setProperty('--border', 'rgba(255,255,255,0.08)');
+      root.style.setProperty('--text', '#e6e7ea');
+      root.style.setProperty('--muted', '#9aa3b2');
+    } else {
+      root.style.setProperty('--surface', 'rgba(255,255,255,0.7)');
+      root.style.setProperty('--border', 'rgba(0,0,0,0.1)');
+      root.style.setProperty('--text', '#0b0c0f');
+      root.style.setProperty('--muted', '#596274');
+    }
     // refresh chart colors
     renderChart();
     // restart background program
-    startBackgroundProgram(st.program, pal);
+    let program = st.program;
+    // For calm night-like states, use stars background
+    if(STATE.night && ['calm','serenity','nostalgia'].includes(st.id)) program = 'stars';
+    startBackgroundProgram(program, pal);
   }
   let bgCtx=null, bgW=0, bgH=0, bgRAF=0, bgProgram='';
   function startBackgroundProgram(program, pal){
@@ -475,6 +491,7 @@
     else if(program==='fire') drawFire(ctx, pal, t);
     else if(program==='rain') drawRain(ctx, pal, t);
     else if(program==='thunder') drawThunder(ctx, pal, t);
+    else if(program==='stars') drawStars(ctx, pal, t);
   }
   function drawAurora(ctx, pal, t){
     const lvl = getLatestValue()/100;
@@ -530,6 +547,19 @@
     }
     drawRain(ctx, pal, t);
   }
+  function drawStars(ctx, pal, t){
+    const lvl = getLatestValue()/100;
+    const count = 140;
+    ctx.fillStyle = hexToRgba('#ffffff', .6);
+    for(let i=0;i<count;i++){
+      const x = (i*97 + (t*20) ) % bgW;
+      const y = (i*53 % bgH);
+      const r = 0.6 + (i%5===0? 1.2: 0.3) + lvl*0.8;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+    }
+    // aurora haze
+    drawAurora(ctx, pal, t*0.6);
+  }
 
   // State controls
   function populateStates(){
@@ -537,6 +567,22 @@
     stateSelect.innerHTML = LONG_STATES.map(s=>`<option value="${s.id}">${STATE.lang==='ru'?s.ru:s.en}</option>`).join('');
     stateSelect.value = STATE.longState;
     dayNightToggle.checked = !!STATE.night;
+  }
+
+  // Tilt interactions (for emoji and entries)
+  function attachTiltTo(selector){
+    document.querySelectorAll(selector).forEach(el => {
+      el.classList.add('tilt');
+      el.addEventListener('pointermove', e => {
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx)/rect.width; // -0.5..0.5
+        const dy = (e.clientY - cy)/rect.height;
+        const rX = dy * -6, rY = dx * 6;
+        el.style.transform = `perspective(600px) rotateX(${rX}deg) rotateY(${rY}deg)`;
+      });
+      el.addEventListener('pointerleave', () => { el.style.transform=''; });
+    });
   }
 
   // Home extras: sparkline + recent dots
@@ -629,6 +675,9 @@
         const map = { sad:'sadness', neutral:'calm', joy:'joy', anger:'anger' };
         const target = map[emotion];
         if(target){ STATE.longState = target; if(stateSelect){ stateSelect.value = target; } applyTheme(); }
+        // emit particles per emotion
+        const rect = btn.getBoundingClientRect();
+        emitParticles(emotion, rect.left + rect.width/2, rect.top + rect.height/2);
       }
       const val = parseInt(btn.dataset.value, 10);
       addEntry(val);
@@ -746,6 +795,23 @@
 
   // Helpers
   function getLatestValue(){ return STATE.entries.length ? STATE.entries[STATE.entries.length-1].value : 50; }
+  function emitParticles(kind, x, y){
+    if(!splashLayer) return;
+    const n = 16;
+    for(let i=0;i<n;i++){
+      const p = document.createElement('div');
+      const a = Math.random()*Math.PI*2;
+      const r = 24 + Math.random()*24;
+      const dx = Math.cos(a)*r, dy = Math.sin(a)*r;
+      p.style.setProperty('--dx', dx+'px');
+      p.style.setProperty('--dy', dy+'px');
+      p.style.left = x+'px';
+      p.style.top = y+'px';
+      p.className = 'particle ' + (kind==='joy'?'spark': kind==='anger'?'flame': kind==='sad'?'drop':'wave');
+      splashLayer.appendChild(p);
+      setTimeout(()=>p.remove(), 900);
+    }
+  }
 
   setPinBtn.addEventListener('click', ()=>{
     const v = pinInput.value.trim();
@@ -791,4 +857,5 @@
   showLockIfNeeded();
   renderTips();
   renderHomeExtras();
+  attachTiltTo('.emoji');
 })();
