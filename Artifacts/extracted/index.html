@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iOS Diary – CI Artifacts Viewer</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b0f14;
+      --fg: #e8f0ff;
+      --muted: #93a0b6;
+      --accent: #7cc8ff;
+      --card: #121822;
+      --border: #1f2a3a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg); color: var(--fg);
+    }
+    header {
+      padding: 16px 20px; position: sticky; top: 0; z-index: 2;
+      background: linear-gradient(180deg, rgba(12,16,22,.9), rgba(12,16,22,.6) 75%, rgba(12,16,22,0));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: .2px; }
+    main { padding: 16px; max-width: 1200px; margin: 0 auto; }
+    section { margin: 18px 0 28px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 980px) { .row { grid-template-columns: 1.6fr 1fr; } }
+    video { width: 100%; height: auto; display: block; background: #000; }
+    .meta { padding: 12px 14px; color: var(--muted); font-size: 13px; border-top: 1px dashed var(--border); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .pill { color: var(--accent); text-decoration: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    figure { margin: 0; background: #0d1420; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    img { width: 100%; height: auto; display: block; }
+    figcaption { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+    footer { padding: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 8px; }
+    .kbd { padding: 2px 6px; border: 1px solid var(--border); border-radius: 6px; background: #0f1622; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>iOS Diary – CI Artifacts Viewer</h1>
+  </header>
+  <main>
+    <section class="row">
+      <div class="card">
+        <video id="demo" src="simulator-video/app-demo.mov" controls playsinline preload="metadata"></video>
+        <div class="meta">
+          <span>Simulator recording: <strong>app-demo.mov</strong></span>
+          <span>
+            <a class="pill" href="simulator-video/app-demo.mov" download>Download</a>
+          </span>
+        </div>
+      </div>
+      <div class="card" style="padding: 14px;">
+        <h3 style="margin: 2px 0 10px; font-size: 16px;">Tips</h3>
+        <ul style="margin: 0 0 8px 18px; padding: 0; line-height: 1.5;">
+          <li>If the video looks empty for a few seconds, scrub to ~2–3s; the app may still be launching.</li>
+          <li>Enable HD controls in the player if available; some browsers gate higher bitrates.</li>
+          <li>If the video won’t play in the browser, click Download and open with Films & TV or VLC.</li>
+        </ul>
+        <div class="hint">Windows tip: press <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> to toggle fullscreen in many players.</div>
+      </div>
+    </section>
+
+    <section>
+      <h3 style="margin: 0 0 10px; font-size: 16px;">UI Snapshots</h3>
+      <div class="grid">
+        <figure>
+          <img src="ui-snapshots/MD_HomeView.png" alt="HomeView" />
+          <figcaption>HomeView</figcaption>
+        </figure>
+        <figure>
+          <img src="ui-snapshots/MD_ChartsView.png" alt="ChartsView" />
+          <figcaption>ChartsView</figcaption>
+        </figure>
+        <figure>
+          <img src="ui-snapshots/MD_TipsView.png" alt="TipsView" />
+          <figcaption>TipsView</figcaption>
+        </figure>
+        <figure>
+          <img src="ui-snapshots/MD_FineTuneSheet.png" alt="FineTuneSheet" />
+          <figcaption>FineTuneSheet</figcaption>
+        </figure>
+        <figure>
+          <img src="ui-snapshots/MD_ContentView.png" alt="ContentView" />
+          <figcaption>ContentView</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h3 style="margin: 0 0 10px; font-size: 16px;">Build Log</h3>
+      <div class="card">
+        <div class="meta">
+          <span>Raw log: <strong>build-sim-log/build-sim.log</strong></span>
+          <span><a class="pill" href="build-sim-log/build-sim.log" download>Download log</a></span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Generated locally for quick review on Windows. Paths are relative; keep folder structure intact.
+  </footer>
+</body>
+</html>
