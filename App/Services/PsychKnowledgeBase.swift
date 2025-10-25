@@ -1,7 +1,7 @@
 import Foundation
 
 public struct PsychKnowledgeBase: Sendable {
-    public struct StateInfo: Codable {
+    public struct StateInfo: Codable, Sendable {
         public let key: String
         public let title: String
         public let tips: [String]
