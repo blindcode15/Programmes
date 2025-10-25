@@ -53,20 +53,35 @@ jobs:
       - name: Record short simulator video (app launch)
         run: |
           set -euo pipefail
+          VIDEO="$GITHUB_WORKSPACE/app-demo.mp4"
           # Determine simulator build output path
           SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphonesimulator -configuration Debug -showBuildSettings)
           TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
           APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
           echo "APP_PATH=$APP_PATH"
-          # Boot simulator and install
-          xcrun simctl boot 'iPhone 15' || true
-          xcrun simctl install booted "$APP_PATH"
-          # Start recording, launch app, wait a few seconds, stop
-          xcrun simctl io booted recordVideo --codec=h264 app-demo.mp4 &
+          # Find an iPhone 15 (iOS 17.5) device UDID
+          DEVICE=$(xcrun simctl list devices | awk -F '[()]' '/iPhone 15 \(17.5\)/ && $0 !~ /unavailable/ {print $2; exit}')
+          if [ -z "$DEVICE" ]; then
+            echo "Falling back to booted alias"
+          else
+            xcrun simctl boot "$DEVICE" || true
+            xcrun simctl bootstatus "$DEVICE" -b
+          fi
+          # Install app
+          xcrun simctl install ${DEVICE:+$DEVICE} "$APP_PATH"
+          # Start recording
+          if [ -n "$DEVICE" ]; then
+            xcrun simctl io "$DEVICE" recordVideo --codec=h264 "$VIDEO" &
+          else
+            xcrun simctl io booted recordVideo --codec=h264 "$VIDEO" &
+          fi
           REC_PID=$!
-          xcrun simctl launch booted com.yourcompany.mood || true
-          sleep 8
+          # Launch app and wait, then stop recording
+          xcrun simctl launch ${DEVICE:+$DEVICE} com.yourcompany.mood || true
+          sleep 10
           kill $REC_PID || true
+          wait $REC_PID || true
+          ls -l "$VIDEO" || true
       - name: Upload simulator video
         if: always()
         uses: actions/upload-artifact@v4
