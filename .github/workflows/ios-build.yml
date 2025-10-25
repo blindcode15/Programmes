@@ -28,6 +28,12 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: List available simulators and runtimes
+        run: |
+          xcrun simctl list devices available
+          echo '---'
+          xcrun simctl list runtimes
+
       - name: Build for iOS Simulator (capture full log)
         run: |
           set +e
@@ -37,7 +43,7 @@ jobs:
             -project MoodDiary.xcodeproj \
             -scheme MoodDiary \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
             -configuration Debug \
             build \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-sim.log
@@ -59,39 +65,61 @@ jobs:
           grep -E "(error:|warning:)" -n build-sim.log || true
       - name: Record short simulator video (app launch)
         run: |
-          set -euo pipefail
+          set +e
+          set -o pipefail
           VIDEO="$GITHUB_WORKSPACE/app-demo.mp4"
+          echo "VIDEO target: $VIDEO"
           # Determine simulator build output path
           SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphonesimulator -configuration Debug -showBuildSettings)
           TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
           APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
           echo "APP_PATH=$APP_PATH"
-          # Pick an available simulator UDID (prefer iPhone 15, otherwise any iPhone)
-          DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 15/ {print $2; exit}')
-          if [ -z "$DEVICE" ]; then
-            DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ {print $2; exit}')
+          # Try to reuse a booted device first
+          BOOTED=$(xcrun simctl list devices | awk -F '[()]' '/Booted/ {print $2; exit}')
+          if [ -n "$BOOTED" ]; then
+            DEVICE="$BOOTED"
+            echo "Using already booted DEVICE=$DEVICE"
+          else
+            # Prefer iPhone 15, otherwise any available iPhone
+            DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 15/ {print $2; exit}')
+            if [ -z "$DEVICE" ]; then
+              DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ {print $2; exit}')
+            fi
+            if [ -z "$DEVICE" ]; then
+              echo "No available iPhone simulators found; creating one"
+              RUNTIME=$(xcrun simctl list runtimes | awk -F '[()]' '/iOS/ && /Available/ {print $2; exit}')
+              DEVICE=$(xcrun simctl create 'CI iPhone' 'iPhone 15' "$RUNTIME")
+            fi
+            echo "Using DEVICE=$DEVICE"
+            # Boot and wait
+            xcrun simctl boot "$DEVICE" || true
+            xcrun simctl bootstatus "$DEVICE" -b || true
           fi
-          echo "Using DEVICE=$DEVICE"
-          # Boot and wait
-          xcrun simctl boot "$DEVICE" || true
-          xcrun simctl bootstatus "$DEVICE" -b || true
-          # Install app
-          xcrun simctl install "$DEVICE" "$APP_PATH" || true
-          # Start recording
-          xcrun simctl io "$DEVICE" recordVideo --codec=h264 "$VIDEO" &
+          TARGET=booted
+          # Install app (best-effort)
+          if [ -d "$APP_PATH" ]; then
+            xcrun simctl install "$DEVICE" "$APP_PATH" || true
+          else
+            echo "App not found at $APP_PATH (build may have failed). Will record home screen."
+          fi
+          # Start recording (force overwrite), run for ~18s
+          xcrun simctl io "$TARGET" recordVideo --codec=h264 --force "$VIDEO" &
           REC_PID=$!
-          # Launch app in demo mode and wait, then stop recording
+          # Launch app in demo mode if we have a bundle; otherwise just wait on SpringBoard
           xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
-          sleep 18
-          kill $REC_PID || true
-          wait $REC_PID || true
+          SECONDS=18
+          echo "Recording for $SECONDS seconds..."
+          sleep $SECONDS
+          kill $REC_PID 2>/dev/null || true
+          wait $REC_PID 2>/dev/null || true
+          echo 'Recorded file:'
           ls -l "$VIDEO" || true
       - name: Upload simulator video
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: simulator-video
-          path: app-demo.mp4
+          path: app-demo.*
       - name: Run UI snapshot tests
         run: |
           set -euo pipefail
