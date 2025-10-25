@@ -47,7 +47,6 @@ struct ContentView: View {
                 .presentationCornerRadius(16)
         }
         .tint(palette.accent)
-        .animation(.easeInOut(duration: 0.35), value: palette.accent)
         .task {
             if store.consumeFineTuneFlag() { showFineTune = true }
             _ = await NotificationHelper.requestAuthorization()
