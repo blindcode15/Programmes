@@ -73,9 +73,9 @@ jobs:
           # Start recording
           xcrun simctl io "$DEVICE" recordVideo --codec=h264 "$VIDEO" &
           REC_PID=$!
-          # Launch app and wait, then stop recording
-          xcrun simctl launch "$DEVICE" com.yourcompany.mood || true
-          sleep 10
+          # Launch app in demo mode and wait, then stop recording
+          xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
+          sleep 18
           kill $REC_PID || true
           wait $REC_PID || true
           ls -l "$VIDEO" || true

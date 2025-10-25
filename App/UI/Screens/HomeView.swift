@@ -48,7 +48,7 @@ struct HomeView: View {
                             Card {
                                 RecentRow(entry: e)
                             }
-                            .modifier(RevealOnScroll())
+                            .modifier(RevealOnScroll(shadowIntensity: 0.08))
                         }
                     }
                 }
@@ -67,13 +67,16 @@ private struct RecentRow: View {
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
             ZStack {
+                Circle()
+                    .fill(color(for: entry.value))
+                    .frame(width: 12, height: 12)
                 Circle().fill(.ultraThinMaterial)
                     .frame(width: 42, height: 42)
                 Text(entry.emoji).font(.title3)
             }
             VStack(alignment: .leading, spacing: 2) {
                 let emo = entry.emotion?.display ?? ""
-                Text("\(entry.value)/100 \(emo.isEmpty ? "" : "· \(emo)")")
+                Text(emo)
                     .font(.subheadline)
                 Text(entry.date, style: .time)
                     .font(.caption)
@@ -93,6 +96,7 @@ private struct RecentRow: View {
 
 // MARK: - Reveal on scroll effect
 private struct RevealOnScroll: ViewModifier {
+    var shadowIntensity: Double = 0.12
     @Environment(\.colorScheme) private var scheme
     func body(content: Content) -> some View {
         GeometryReader { proxy in
@@ -103,9 +107,22 @@ private struct RevealOnScroll: ViewModifier {
                 .opacity(progress)
                 .offset(y: (1 - progress) * 24)
                 .rotation3DEffect(.degrees((1 - progress) * 8), axis: (x: 1, y: 0, z: 0), anchor: .bottom)
-                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(0.12 * (1 - progress)), radius: 8, x: 0, y: 6)
+                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(shadowIntensity * (1 - progress)), radius: 8, x: 0, y: 6)
                 .animation(.spring(response: 0.6, dampingFraction: 0.8), value: progress)
         }
         .frame(height: 64)
     }
+}
+
+// Map value 0..100 to a small color dot: cool/dark near 0 → warm/light near 100
+private func color(for value: Int) -> Color {
+    let clamped = max(0, min(100, value))
+    // hue from blue (0.65) to warm (0.08), brightness ramps up
+    let hueStart: Double = 0.65
+    let hueEnd: Double = 0.08
+    let t = Double(clamped) / 100.0
+    let hue = hueStart + (hueEnd - hueStart) * t
+    let sat = 0.6 - 0.2 * t
+    let bri = 0.45 + 0.45 * t
+    return Color(hue: hue, saturation: sat, brightness: bri)
 }

@@ -14,3 +14,15 @@ public extension EnvironmentValues {
         set { self[ThemePaletteKey.self] = newValue }
     }
 }
+
+// Mood state in environment for richer theming
+private struct MoodStateKey: EnvironmentKey {
+    static let defaultValue: PersistentMoodState = .neutral
+}
+
+public extension EnvironmentValues {
+    var persistentMoodState: PersistentMoodState {
+        get { self[MoodStateKey.self] }
+        set { self[MoodStateKey.self] = newValue }
+    }
+}

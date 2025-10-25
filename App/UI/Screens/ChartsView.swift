@@ -7,6 +7,7 @@ import Charts
 struct ChartsView: View {
     @EnvironmentObject private var store: MoodStore
     @EnvironmentObject private var vm: ChartsViewModel
+    @Environment(\.themePalette) private var palette
 
     var body: some View {
         VStack(spacing: 12) {
@@ -24,30 +25,48 @@ struct ChartsView: View {
                 StatPill(title: "Max", value: "\(vm.maxValue)")
             }
 
-            Chart(vm.series()) { entry in
-                AreaMark(
-                    x: .value("Date", entry.date),
-                    y: .value("Value", entry.value)
-                )
-                .interpolationMethod(.catmullRom)
-                .foregroundStyle(
-                    LinearGradient(colors: [Color.accentColor.opacity(0.35), Color.accentColor.opacity(0.05)], startPoint: .top, endPoint: .bottom)
-                )
+            TimelineView(.animation) { timeline in
+                let t = timeline.date.timeIntervalSinceReferenceDate
+                Chart(vm.series()) { entry in
+                    AreaMark(
+                        x: .value("Date", entry.date),
+                        y: .value("Value", entry.value)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(
+                        LinearGradient(colors: [palette.state.chart.line.opacity(0.35), palette.state.chart.line.opacity(0.05)], startPoint: .top, endPoint: .bottom)
+                    )
 
-                LineMark(
-                    x: .value("Date", entry.date),
-                    y: .value("Value", entry.value)
-                )
-                .interpolationMethod(.catmullRom)
-                .foregroundStyle(Color.accentColor)
-                .lineStyle(StrokeStyle(lineWidth: 2.0, lineCap: .round))
+                    LineMark(
+                        x: .value("Date", entry.date),
+                        y: .value("Value", entry.value)
+                    )
+                    .interpolationMethod(.catmullRom)
+                    .foregroundStyle(palette.state.chart.line)
+                    .lineStyle(StrokeStyle(lineWidth: 2.0, lineCap: .round))
 
-                PointMark(
-                    x: .value("Date", entry.date),
-                    y: .value("Value", entry.value)
-                )
-                .symbol(.circle)
-                .foregroundStyle(Color.accentColor)
+                    PointMark(
+                        x: .value("Date", entry.date),
+                        y: .value("Value", entry.value)
+                    )
+                    .symbol(.circle)
+                    .foregroundStyle(palette.state.chart.line)
+
+                    // Phasic emotion highlights with subtle pulse
+                    if let emo = entry.emotion, emo.function == .phasic {
+                        let base: Double = 34
+                        let amp: Double = 12
+                        let pulse = base + amp * (sin(t * 2.0) + 1) / 2.0
+                        PointMark(
+                            x: .value("Date", entry.date),
+                            y: .value("Value", entry.value)
+                        )
+                        .symbol(.circle)
+                        .foregroundStyle(palette.state.chart.phasic)
+                        .opacity(0.95)
+                        .symbolSize(pulse)
+                    }
+                }
             }
             .frame(height: 220)
             .chartYScale(domain: 0...100)

@@ -15,6 +15,8 @@ struct EmojiQuickRow: View {
                             .frame(width: 64, height: 64)
                             .shadow(color: glow(for: e), radius: 10, x: 0, y: 6)
                         Text(emoji(for: e, value: v)).font(.title)
+                        // micro animation overlay per emotion
+                        MicroAnimView(kind: e)
                     }
                 }
                 .buttonStyle(PressableButtonStyle(highlight: .accentColor))
@@ -32,10 +34,10 @@ struct EmojiQuickRow: View {
 
     private func defaultValue(for e: Emotion) -> Int {
         switch e {
-        case .joy: return 85
-        case .anxiety: return 45
-        case .anger: return 35
-        case .sadness: return 20
+        case .joy: return 92
+        case .anxiety: return 55
+        case .anger: return 30
+        case .sadness: return 12
         }
     }
 
@@ -63,6 +65,48 @@ struct EmojiQuickRow: View {
         case .anxiety: return .blue.opacity(0.35)
         case .anger: return .red.opacity(0.45)
         case .sadness: return .purple.opacity(0.35)
+        }
+    }
+}
+
+// MARK: - Micro animations per emotion (simple SF Symbols + opacity/scale)
+private struct MicroAnimView: View {
+    let kind: Emotion
+    @State private var trigger: Bool = false
+    var body: some View {
+        ZStack {
+            switch kind {
+            case .anger:
+                Image(systemName: "flame.fill")
+                    .foregroundStyle(.orange)
+                    .scaleEffect(trigger ? 1.2 : 0.6)
+                    .opacity(trigger ? 0.6 : 0.0)
+                    .offset(y: trigger ? -28 : -10)
+            case .joy:
+                Image(systemName: "sparkles")
+                    .foregroundStyle(.yellow)
+                    .scaleEffect(trigger ? 1.1 : 0.6)
+                    .opacity(trigger ? 0.7 : 0.0)
+                    .offset(y: -28)
+            case .anxiety:
+                Image(systemName: "waveform.path.ecg")
+                    .foregroundStyle(.cyan)
+                    .scaleEffect(trigger ? 1.05 : 0.8)
+                    .opacity(trigger ? 0.5 : 0.0)
+                    .offset(y: 26)
+            case .sadness:
+                Image(systemName: "drop.fill")
+                    .foregroundStyle(.blue)
+                    .scaleEffect(trigger ? 1.15 : 0.7)
+                    .opacity(trigger ? 0.6 : 0.0)
+                    .offset(y: 24)
+            }
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.6)) { trigger.toggle() }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                trigger = false
+            }
         }
     }
 }

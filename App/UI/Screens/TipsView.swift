@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TipsView: View {
     @EnvironmentObject private var store: MoodStore
+    @Environment(\.persistentMoodState) private var persistentState
 
     private var tipsEngine: TipsEngine {
         let url = Bundle.main.url(forResource: "PhrasesBank", withExtension: "json") ?? URL(fileURLWithPath: "")
@@ -18,6 +19,8 @@ struct TipsView: View {
                 let analytics = AnalyticsEngine(entries: store.entries)
                 let latest = store.entries.last?.value
                 let weeklyAvg = analytics.avg(period: .week)
+                let kb = PsychKnowledgeBase()
+                let kbState = kb.states.first { $0.key == persistentState.rawValue }
 
                 Group {
                     HStack(spacing: 10) {
@@ -37,7 +40,15 @@ struct TipsView: View {
                     }
                 }
 
-                // Advice cards
+                // State-aware advice (from knowledge base) on top
+                if let s = kbState, !s.tips.isEmpty {
+                    Text("Советы состояния").font(.headline)
+                    ForEach(Array(s.tips.prefix(3)), id: \.self) { t in
+                        Card { Text(t) }
+                    }
+                }
+
+                // Generic advice blended with trend
                 let trend = analytics.trend7d()
                 let baseForPhrases = latest ?? 50
                 Text("Советы").font(.headline)
@@ -49,8 +60,14 @@ struct TipsView: View {
                 Text("Мини-фразы").font(.headline)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(tipsEngine.phrases(for: baseForPhrases, count: 6), id: \.self) { t in
-                            Card { Text(t).frame(width: 220, alignment: .leading) }
+                        if let s = kbState, !s.phrases.isEmpty {
+                            ForEach(Array(s.phrases.prefix(8)), id: \.self) { t in
+                                Card { Text(t).frame(width: 220, alignment: .leading) }
+                            }
+                        } else {
+                            ForEach(tipsEngine.phrases(for: baseForPhrases, count: 6), id: \.self) { t in
+                                Card { Text(t).frame(width: 220, alignment: .leading) }
+                            }
                         }
                     }
                     .padding(.vertical, 2)

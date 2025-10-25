@@ -5,8 +5,8 @@ public extension MoodStore {
     // Snapshot helpers with explicit names to avoid collisions
     func entriesSnapshot() -> [MoodEntry] { entries }
 
-    func append(value: Int, note: String?, emotion: Emotion? = nil) {
-        addQuick(value: value, note: note, emotion: emotion)
+    func append(value: Int, note: String?, emotion: Emotion? = nil, customEmoji: String? = nil) {
+        addQuick(value: value, note: note, emotion: emotion, customEmoji: customEmoji)
     }
 
     func removeLastEntry() {

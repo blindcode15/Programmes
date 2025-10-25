@@ -25,9 +25,9 @@ public final class MoodStore: ObservableObject {
     }
 
     // MARK: - Entries
-    public func addQuick(value: Int, note: String? = nil, emotion: Emotion? = nil) {
+    public func addQuick(value: Int, note: String? = nil, emotion: Emotion? = nil, customEmoji: String? = nil) {
         var list = entries
-        list.append(MoodEntry(value: value, note: note, emotion: emotion))
+        list.append(MoodEntry(value: value, note: note, emotion: emotion, customEmoji: customEmoji))
         save(list)
     }
 
