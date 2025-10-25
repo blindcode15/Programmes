@@ -59,25 +59,22 @@ jobs:
           TARGET_BUILD_DIR=$(echo "$SETTINGS" | awk -F" = " '/TARGET_BUILD_DIR/ {print $2; exit}')
           APP_PATH="$TARGET_BUILD_DIR/MoodDiary.app"
           echo "APP_PATH=$APP_PATH"
-          # Find an iPhone 15 (iOS 17.5) device UDID
-          DEVICE=$(xcrun simctl list devices | awk -F '[()]' '/iPhone 15 \(17.5\)/ && $0 !~ /unavailable/ {print $2; exit}')
+          # Pick an available simulator UDID (prefer iPhone 15, otherwise any iPhone)
+          DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 15/ {print $2; exit}')
           if [ -z "$DEVICE" ]; then
-            echo "Falling back to booted alias"
-          else
-            xcrun simctl boot "$DEVICE" || true
-            xcrun simctl bootstatus "$DEVICE" -b
+            DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ {print $2; exit}')
           fi
+          echo "Using DEVICE=$DEVICE"
+          # Boot and wait
+          xcrun simctl boot "$DEVICE" || true
+          xcrun simctl bootstatus "$DEVICE" -b || true
           # Install app
-          xcrun simctl install ${DEVICE:+$DEVICE} "$APP_PATH"
+          xcrun simctl install "$DEVICE" "$APP_PATH" || true
           # Start recording
-          if [ -n "$DEVICE" ]; then
-            xcrun simctl io "$DEVICE" recordVideo --codec=h264 "$VIDEO" &
-          else
-            xcrun simctl io booted recordVideo --codec=h264 "$VIDEO" &
-          fi
+          xcrun simctl io "$DEVICE" recordVideo --codec=h264 "$VIDEO" &
           REC_PID=$!
           # Launch app and wait, then stop recording
-          xcrun simctl launch ${DEVICE:+$DEVICE} com.yourcompany.mood || true
+          xcrun simctl launch "$DEVICE" com.yourcompany.mood || true
           sleep 10
           kill $REC_PID || true
           wait $REC_PID || true
