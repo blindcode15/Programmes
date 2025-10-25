@@ -43,7 +43,7 @@ jobs:
             -project MoodDiary.xcodeproj \
             -scheme MoodDiary \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination 'generic/platform=iOS Simulator' \
             -configuration Debug \
             build \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-sim.log
@@ -82,8 +82,11 @@ jobs:
             DEVICE="$BOOTED"
             echo "Using already booted DEVICE=$DEVICE"
           else
-            # Prefer iPhone 15, otherwise any available iPhone
-            DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 15/ {print $2; exit}')
+            # Prefer iPhone 16 (iOS 18), then iPhone 15 (iOS 17), otherwise any available iPhone
+            DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 16/ {print $2; exit}')
+            if [ -z "$DEVICE" ]; then
+              DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone 15/ {print $2; exit}')
+            fi
             if [ -z "$DEVICE" ]; then
               DEVICE=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ {print $2; exit}')
             fi
@@ -134,7 +137,7 @@ jobs:
             -project MoodDiary.xcodeproj \
             -scheme MoodDiary \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
             -configuration Debug \
             -only-testing:MoodDiaryScreenshots \
             test \
