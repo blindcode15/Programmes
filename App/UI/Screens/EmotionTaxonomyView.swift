@@ -13,13 +13,13 @@ struct EmotionTaxonomyView: View {
                 Card {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Разовые (импульсивные)").font(.headline)
-                        ChipsGrid(EmotionTaxonomy.phasic)
+                        ChipsGrid(items: EmotionTaxonomy.phasic)
                     }
                 }
                 Card {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Постоянные (фоновые)").font(.headline)
-                        ChipsGrid(EmotionTaxonomy.tonic)
+                        ChipsGrid(items: EmotionTaxonomy.tonic)
                     }
                 }
 
