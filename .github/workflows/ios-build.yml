@@ -50,6 +50,13 @@ jobs:
         with:
           name: build-sim-log
           path: build-sim.log
+      - name: Show last compiler errors (summary)
+        if: failure()
+        run: |
+          echo '--- Tail last 300 lines ---'
+          tail -n 300 build-sim.log || true
+          echo '--- Grep error/warning lines ---'
+          grep -E "(error:|warning:)" -n build-sim.log || true
       - name: Record short simulator video (app launch)
         run: |
           set -euo pipefail
