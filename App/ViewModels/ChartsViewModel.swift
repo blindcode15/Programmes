@@ -25,7 +25,6 @@ final class ChartsViewModel: ObservableObject {
         return entries.filter{ $0.date >= start }
     }
 
-    private func map(_ r: Range) -> Period { switch r { case .day: .day; case .week: .week; case .month: .month } }
     // Swift 5/6 on CI may not support switch-expression shorthand reliably; be explicit
     private func map(_ r: Range) -> Period {
         switch r {
