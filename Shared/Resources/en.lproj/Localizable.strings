@@ -1,0 +1,11 @@
+"APP_TITLE" = "Mood Diary";
+"NEW_ENTRY" = "New Entry";
+"SAVE" = "Save";
+"CANCEL" = "Cancel";
+"WHAT_HAPPENED" = "Briefly: what happened?";
+"REMINDER_TITLE" = "How do you feel today?";
+"REMINDER_BODY" = "Log your mood in a second.";
+"EXPORT_JSON" = "Export JSON";
+"EXPORT_CSV" = "Export CSV";
+"NOTHING" = "Nothing";
+"FINE_TUNE" = "Fine-tune";

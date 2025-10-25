@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build iOS Diary",
+			"type": "shell",
+			"command": "swift build",
+			"isBackground": false,
+			"problemMatcher": [
+				"$swift"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Open Windows Preview",
+			"type": "shell",
+			"command": "start .\\PreviewWeb\\index.html",
+			"isBackground": false,
+			"group": "build"
+		}
+	]
+}

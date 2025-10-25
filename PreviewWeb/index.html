@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mood Diary – Preview</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Mood Diary (Preview)</div>
+    <nav class="nav">
+      <button class="nav-btn" data-target="home" id="navHome">Домой</button>
+      <button class="nav-btn" data-target="history" id="navHistory">История</button>
+      <button class="nav-btn" data-target="chart" id="navChart">График</button>
+      <button class="nav-btn" data-target="tips" id="navTips">Советы</button>
+      <button class="nav-btn" data-target="settings" id="navSettings">Настройки</button>
+    </nav>
+  </header>
+
+  <main class="page">
+    <!-- Home -->
+    <section class="widget" id="homeSection">
+      <div class="widget-row">
+        <button class="emoji" data-value="1">😞</button>
+        <button class="emoji" data-value="4">😐</button>
+        <button class="emoji" data-value="7">🙂</button>
+        <button class="emoji" data-value="9">😄</button>
+        <button class="emoji fine" id="fineBtn" title="Точно/подробно">🎚️</button>
+      </div>
+      <div class="last-value" id="lastValue">Последнее: —</div>
+      <div class="undo" id="undoBar" hidden>
+        <span id="undoText">Запись добавлена</span>
+        <button class="btn" id="undoBtn">Отменить</button>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="list" id="entries" aria-label="История" hidden></section>
+
+    <!-- Charts -->
+    <section class="chart" id="chartSection" hidden>
+      <div class="segmented" role="tablist">
+        <button class="seg-btn active" data-range="day" id="rangeDay">День</button>
+        <button class="seg-btn" data-range="week" id="rangeWeek">Неделя</button>
+        <button class="seg-btn" data-range="month" id="rangeMonth">Месяц</button>
+      </div>
+      <div class="pills" id="statPills">
+        <div class="pill"><span>Avg</span><strong id="statAvg">–</strong></div>
+        <div class="pill"><span>Median</span><strong id="statMed">–</strong></div>
+        <div class="pill"><span>Min</span><strong id="statMin">–</strong></div>
+        <div class="pill"><span>Max</span><strong id="statMax">–</strong></div>
+      </div>
+      <canvas id="moodChart" height="160"></canvas>
+      <h4 class="muted" style="margin:8px 0 4px">Heatmap</h4>
+      <div class="heatmap" id="heatmap"></div>
+    </section>
+
+    <section class="list" id="tipsSection" hidden aria-label="Советы">
+      <div id="tipsList"></div>
+    </section>
+  </main>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <header class="sheet-header">
+      <h2 id="sheetTitle">Точно</h2>
+      <div class="value" id="sheetValue">5 / 10</div>
+    </header>
+    <div class="sheet-body">
+      <label for="slider" class="sr-only">Настроение</label>
+      <input type="range" id="slider" min="0" max="10" step="1" value="5" aria-label="Настроение" />
+      <label for="note" class="sr-only">Заметка</label>
+      <input type="text" id="note" placeholder="Коротко: что произошло?" aria-label="Заметка" />
+    </div>
+    <footer class="sheet-footer">
+      <button class="btn" id="cancelBtn">Ничего</button>
+      <button class="btn primary" id="saveBtn">Сохранить</button>
+    </footer>
+  </aside>
+
+  <aside class="panel" id="settingsPanel" hidden>
+    <h2>Настройки</h2>
+    <div class="settings-grid">
+      <div>
+        <label for="langSelect">Язык / Language</label>
+        <select id="langSelect">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <div>
+        <label>Экспорт</label>
+        <div class="settings-row">
+          <button class="btn" id="exportJsonBtn">Export JSON</button>
+          <button class="btn" id="exportCsvBtn">Export CSV</button>
+        </div>
+      </div>
+      <div>
+        <label>Уведомления</label>
+        <div class="settings-row">
+          <button class="btn" id="enableNotifsBtn">Разрешить</button>
+          <button class="btn" id="testNotifBtn">Тест через 10с</button>
+        </div>
+      </div>
+      <div>
+        <label>Блокировка (PIN)</label>
+        <div class="settings-row">
+          <input type="password" id="pinInput" placeholder="Новый PIN" />
+          <button class="btn" id="setPinBtn">Установить</button>
+          <button class="btn" id="clearPinBtn">Сбросить</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="lock" id="lockOverlay" hidden>
+    <div class="lock-card">
+      <h3>Введите PIN</h3>
+      <label for="unlockPin" class="sr-only">PIN</label>
+      <input type="password" id="unlockPin" placeholder="PIN" aria-label="PIN" />
+      <div class="settings-row">
+        <button class="btn primary" id="unlockBtn">Разблокировать</button>
+      </div>
+      <div class="muted" id="lockHint"></div>
+      <div class="muted"><button class="link" id="forgotPinBtn" type="button">Забыли PIN?</button></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

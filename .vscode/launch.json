@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build iOS Diary",
+      "type": "shell",
+      "command": "swift build",
+      "isBackground": false,
+      "problemMatcher": [
+        "$swift"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Open Windows Preview",
+      "type": "shell",
+      "command": "start .\\PreviewWeb\\index.html",
+      "isBackground": false,
+      "group": "build"
+    }
+  ],
+  "configurations": [
+    {
+      "type": "pwa-msedge",
+      "request": "launch",
+      "name": "Preview UI in Edge (PreviewWeb/index.html)",
+      "file": "${workspaceFolder}/PreviewWeb/index.html"
+    },
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Preview UI in Chrome (PreviewWeb/index.html)",
+      "file": "${workspaceFolder}/PreviewWeb/index.html"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug Swift tests (swift test)",
+      "program": "${input:swiftPath}",
+      "args": [
+        "test"
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Build iOS Diary"
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "swiftPath",
+      "description": "Path to the Swift executable to run tests (e.g., swift on PATH or full path to swift.exe/swift)"
+    }
+  ]
+}
