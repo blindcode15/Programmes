@@ -89,8 +89,8 @@ jobs:
       - name: Collect snapshots
         run: |
           mkdir -p snapshots
-          # Grab all PNGs written by tests
-          find /private/var/folders -type f -name '*.png' -maxdepth 6 -print -exec cp -v {} snapshots/ \; 2>/dev/null || true
+          # Grab only our test PNGs (prefixed with MD_) from simulator temp dirs
+          find /private/var/folders -type f -name 'MD_*.png' -maxdepth 6 -print -exec cp -v {} snapshots/ \; 2>/dev/null || true
           ls -la snapshots || true
       - name: Upload snapshots
         uses: actions/upload-artifact@v4

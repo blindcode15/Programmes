@@ -78,7 +78,8 @@ final class ScreenshotsTests: XCTestCase {
     }
 
     private func writePNG(_ image: UIImage, name: String) {
-        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(name).png")
+        // Prefix with MD_ to allow CI to collect only our test snapshots
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("MD_\(name).png")
         if let data = image.pngData() {
             try? data.write(to: url)
             print("SNAPSHOT: \(url.path)")
