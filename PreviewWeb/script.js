@@ -82,6 +82,7 @@
   // Theme/UI additions
   const stateSelect = document.getElementById('stateSelect');
   const dayNightToggle = document.getElementById('dayNightToggle');
+  const demoBtn = document.getElementById('demoBtn');
   const emojiPanel = document.getElementById('emojiPanel');
   const emojiGrid = document.getElementById('emojiGrid');
   const splashLayer = document.getElementById('splashLayer');
@@ -746,6 +747,29 @@
   if(dayNightToggle){
     dayNightToggle.addEventListener('change', ()=>{ STATE.night = dayNightToggle.checked; applyTheme(); });
   }
+  // Demo autorun
+  let DEMO_TIMER=null; let DEMO_STEP=0;
+  function toggleDemo(){ if(DEMO_TIMER){ stopDemo(); } else { startDemo(); } }
+  function startDemo(){
+    if(demoBtn) demoBtn.textContent = 'Stop';
+    const states = LONG_STATES.map(s=>s.id);
+    DEMO_TIMER = setInterval(()=>{
+      // Cycle state
+      STATE.longState = states[DEMO_STEP % states.length];
+      if(stateSelect) stateSelect.value = STATE.longState;
+      // Flip day/night every other step
+      STATE.night = (DEMO_STEP % 2 === 0);
+      if(dayNightToggle) dayNightToggle.checked = STATE.night;
+      applyTheme();
+      // Add a trending entry
+      const base = 55 + Math.round(35*Math.sin(DEMO_STEP/2));
+      const val = Math.max(0, Math.min(100, base + Math.round((Math.random()*20)-10)));
+      addEntry(val, null);
+      DEMO_STEP++;
+    }, 1800);
+  }
+  function stopDemo(){ if(DEMO_TIMER){ clearInterval(DEMO_TIMER); DEMO_TIMER=null; } if(demoBtn) demoBtn.textContent='Demo'; }
+  if(demoBtn){ demoBtn.addEventListener('click', toggleDemo); }
 
   // Emoji panel
   const EMOJI_PRESETS = [
@@ -858,4 +882,6 @@
   renderTips();
   renderHomeExtras();
   attachTiltTo('.emoji');
+  // Optionally start demo if URL has ?demo
+  try{ if(new URLSearchParams(location.search).has('demo')){ startDemo(); } }catch{}
 })();

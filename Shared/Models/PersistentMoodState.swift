@@ -52,6 +52,10 @@ public enum PersistentMoodState: String, CaseIterable, Codable {
         public let phasic: Color
     }
 
+    public enum BackgroundProgram: String, Codable {
+        case aurora, bubbles, fire, rain, thunder, stars
+    }
+
     public var tone: Tone {
         switch self {
         case .bliss: return Tone(day: [.yellow, .orange], night: [.orange, .pink])
@@ -149,6 +153,23 @@ public enum PersistentMoodState: String, CaseIterable, Codable {
         case .despair: return ChartSpec(line: .purple, phasic: .red)
         case .panic: return ChartSpec(line: .red, phasic: .yellow)
         case .tragic: return ChartSpec(line: .red, phasic: .black)
+        }
+    }
+
+    public var program: BackgroundProgram {
+        switch self {
+        case .bliss, .joyfulCalm, .hopeful, .content, .reflective, .melancholic:
+            return .aurora
+        case .productive, .focused:
+            return .bubbles
+        case .angry, .irritated:
+            return .fire
+        case .sad, .sorrowful, .grieving, .exhausted:
+            return .rain
+        case .uneasy, .despair, .panic, .tragic:
+            return .thunder
+        case .neutral, .overwhelmed:
+            return .stars
         }
     }
 }
