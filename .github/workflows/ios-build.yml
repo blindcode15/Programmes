@@ -64,10 +64,12 @@ jobs:
           echo '--- Grep error/warning lines ---'
           grep -E "(error:|warning:)" -n build-sim.log || true
       - name: Record short simulator video (app launch)
+        if: always()
         run: |
           set +e
           set -o pipefail
-          VIDEO="$GITHUB_WORKSPACE/app-demo.mp4"
+          # Use .mov for best compatibility with simctl; we'll upload with wildcard
+          VIDEO="$GITHUB_WORKSPACE/app-demo.mov"
           echo "VIDEO target: $VIDEO"
           # Determine simulator build output path
           SETTINGS=$(xcodebuild -project MoodDiary.xcodeproj -scheme MoodDiary -sdk iphonesimulator -configuration Debug -showBuildSettings)
@@ -103,7 +105,7 @@ jobs:
             echo "App not found at $APP_PATH (build may have failed). Will record home screen."
           fi
           # Start recording (force overwrite), run for ~18s
-          xcrun simctl io "$TARGET" recordVideo --codec=h264 --force "$VIDEO" &
+          xcrun simctl io "$DEVICE" recordVideo --codec=h264 --force "$VIDEO" &
           REC_PID=$!
           # Launch app in demo mode if we have a bundle; otherwise just wait on SpringBoard
           xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
@@ -114,6 +116,11 @@ jobs:
           wait $REC_PID 2>/dev/null || true
           echo 'Recorded file:'
           ls -l "$VIDEO" || true
+          # Fallback: take a screenshot if video missing
+          if [ ! -f "$VIDEO" ]; then
+            echo 'Video not found, taking a screenshot instead'
+            xcrun simctl io "$DEVICE" screenshot "$GITHUB_WORKSPACE/app-screenshot.png" || true
+          fi
       - name: Upload simulator video
         if: always()
         uses: actions/upload-artifact@v4
