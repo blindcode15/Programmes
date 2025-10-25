@@ -2,20 +2,20 @@ import Foundation
 
 // Shim API matching the requested interface while using the existing MoodStore
 public extension MoodStore {
-    // Do not clash with internal private load(); give a unique name
-    func snapshot() -> [MoodEntry] { entries }
+    // Snapshot helpers with explicit names to avoid collisions
+    func entriesSnapshot() -> [MoodEntry] { entries }
 
     func append(value: Int, note: String?, emotion: Emotion? = nil) {
         addQuick(value: value, note: note, emotion: emotion)
     }
 
-    func removeLast() {
+    func removeLastEntry() {
         var list = entries
         _ = list.popLast()
         setEntries(list)
     }
 
-    func latest() -> MoodEntry? { entries.last }
+    func latestEntry() -> MoodEntry? { entries.last }
 
     // Avoid name collision with existing exportCSV() -> String
     func exportCSVData() -> Data {

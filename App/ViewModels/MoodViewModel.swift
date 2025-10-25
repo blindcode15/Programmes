@@ -14,19 +14,19 @@ final class MoodViewModel: ObservableObject {
 
     func quickAdd(value: Int, emotion: Emotion) {
         MoodStore.shared.append(value: value, note: nil, emotion: emotion)
-        lastAddedId = MoodStore.shared.latest()?.id
+        lastAddedId = MoodStore.shared.latestEntry()?.id
         startUndoTimer()
     }
 
     func fineAdd(value: Int, note: String?, emotion: Emotion?) {
         MoodStore.shared.append(value: value, note: note, emotion: emotion)
-        lastAddedId = MoodStore.shared.latest()?.id
+        lastAddedId = MoodStore.shared.latestEntry()?.id
         startUndoTimer()
     }
 
     func undoLast() {
         guard undoAvailable else { return }
-        MoodStore.shared.removeLast()
+        MoodStore.shared.removeLastEntry()
         undoAvailable = false
         undoTimer?.invalidate(); undoTimer = nil
     }
