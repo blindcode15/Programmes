@@ -26,4 +26,12 @@ final class ChartsViewModel: ObservableObject {
     }
 
     private func map(_ r: Range) -> Period { switch r { case .day: .day; case .week: .week; case .month: .month } }
+    // Swift 5/6 on CI may not support switch-expression shorthand reliably; be explicit
+    private func map(_ r: Range) -> Period {
+        switch r {
+        case .day: return .day
+        case .week: return .week
+        case .month: return .month
+        }
+    }
 }
