@@ -4,7 +4,8 @@ private struct ThemePaletteKey: EnvironmentKey {
     static let defaultValue = ThemePalette(
         accent: .accentColor,
         glow: .accentColor.opacity(0.4),
-        gradient: LinearGradient(colors: [.accentColor, .accentColor.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        gradient: LinearGradient(colors: [.accentColor, .accentColor.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing),
+        state: .neutral
     )
 }
 
