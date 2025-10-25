@@ -23,8 +23,15 @@ struct HomeView: View {
                             Text(last.emoji).font(.largeTitle)
                             VStack(alignment: .leading) {
                                 let emo = last.emotion?.display ?? ""
-                                Text("Последнее: \(last.value)/100 \(emo.isEmpty ? "" : "· \(emo)")")
-                                    .font(.headline)
+                                let prev = store.entries.dropLast().last?.value
+                                let delta = prev.map { last.value - $0 } ?? 0
+                                let arrow: String = delta > 5 ? "↑" : (delta < -5 ? "↓" : "→")
+                                let arrowColor: Color = delta > 5 ? .green : (delta < -5 ? .red : .secondary)
+                                HStack(spacing: 6) {
+                                    Text("Последнее: \(last.value)/100 \(emo.isEmpty ? "" : "· \(emo)")")
+                                        .font(.headline)
+                                    Text(arrow).foregroundStyle(arrowColor)
+                                }
                                 Text(last.date, style: .date)
                                     .font(.caption).foregroundStyle(.secondary)
                             }

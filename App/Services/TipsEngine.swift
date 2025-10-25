@@ -55,12 +55,12 @@ public struct TipsEngine {
     public func advice(latest: Int, trend: Trend) -> [String] {
         var out = phrases(for: latest, count: 2)
         switch trend {
-        case .down(let d) where d <= -1.0:
+        case .down(let d) where d <= -5.0:
             out.append(contentsOf: [
                 "Бережный режим: сон, вода, короткие прогулки, тёплые контакты.",
                 "Не требуйте от себя слишком многого — маленькие шаги." 
             ])
-        case .up(let d) where d >= 1.0:
+        case .up(let d) where d >= 5.0:
             out.append(contentsOf: [
                 "Поддерживающий режим: зафиксируйте триггеры (музыка, спорт, общение).",
                 "Закрепите полезные привычки — они работают." 

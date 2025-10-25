@@ -46,6 +46,8 @@ body{
 .emo-sad{ --glow: #64b5f6 }
 .emo-neutral{ --glow: #c3cad6 }
 .last-value{ margin-top:10px; font-size:12px; color:var(--muted) }
+.recent-dots{ display:flex; gap:6px; align-items:center; flex-wrap:wrap }
+.recent-dots .dot{ width:10px; height:10px; border-radius:50%; box-shadow:0 0 6px rgba(0,0,0,.3); border:1px solid #1b1f2a }
 
 .list{ margin-top:16px; display:grid; gap:12px }
 .entry{

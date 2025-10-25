@@ -58,6 +58,13 @@ struct ContentView: View {
                 var step = 0
                 demoTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
                     selectedTab = step % 3
+                    // also inject a visible change: add a small random entry to animate charts
+                    let base = Int.random(in: 20...85)
+                    let jitter = Int.random(in: -12...12)
+                    let val = max(0, min(100, base + jitter))
+                    let emos: [Emotion] = [.joy, .anxiety, .anger, .sadness]
+                    let emo = emos.randomElement()
+                    MoodStore.shared.append(value: val, note: nil, emotion: emo)
                     step += 1
                 }
             }

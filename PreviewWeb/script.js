@@ -31,6 +31,8 @@
   const entriesEl = document.getElementById('entries');
   const toast = document.getElementById('toast');
   const chartCanvas = document.getElementById('moodChart');
+  const homeSpark = document.getElementById('homeSpark');
+  const homeRecentRow = document.getElementById('homeRecentRow');
 
   const navHome = document.getElementById('navHome');
   const navHistory = document.getElementById('navHistory');
@@ -210,7 +212,11 @@
   function updateLast(){
     if(STATE.entries.length){
       const last = STATE.entries[STATE.entries.length-1];
-      lastValueEl.textContent = T[STATE.lang].last(last.value);
+      const prev = STATE.entries.length>1 ? STATE.entries[STATE.entries.length-2].value : null;
+      const delta = prev!=null ? (last.value - prev) : 0;
+      const arrow = delta>5? '↑' : delta<-5? '↓' : '→';
+      const color = delta>5? '#27d17f' : delta<-5? '#ff6b6b' : '#9aa3b2';
+      lastValueEl.innerHTML = `${T[STATE.lang].last(last.value)} <span style="color:${color}">${arrow}</span>`;
     } else {
       lastValueEl.textContent = T[STATE.lang].lastNone;
     }
@@ -249,18 +255,26 @@
     const labels = data.map(e => e.date.toLocaleDateString(STATE.lang==='ru'?'ru-RU':'en-US', {month:'short', day:'numeric'}));
     const values = data.map(e => e.value);
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4f7cff';
+    // burst points: sharp changes over threshold (15)
+    const bursts = values.map((v,i)=> i>0 && Math.abs(v - values[i-1]) >= 15);
+    const pRadius = values.map((_,i)=> bursts[i]?5:3);
+    const pBg = values.map((_,i)=> bursts[i]? '#ffffff' : hexToRgba(accent, .9));
+    const pBorder = values.map((_,i)=> bursts[i]? accent : hexToRgba(accent, .9));
     if(STATE.chart){
       STATE.chart.data.labels = labels;
       STATE.chart.data.datasets[0].data = values;
       STATE.chart.data.datasets[0].borderColor = accent;
       STATE.chart.data.datasets[0].backgroundColor = hexToRgba(accent, .18);
+      STATE.chart.data.datasets[0].pointRadius = pRadius;
+      STATE.chart.data.datasets[0].pointBackgroundColor = pBg;
+      STATE.chart.data.datasets[0].pointBorderColor = pBorder;
       STATE.chart.update();
       return;
     }
     const ctx = chartCanvas.getContext('2d');
     STATE.chart = new Chart(ctx, {
       type: 'line',
-      data: { labels, datasets: [{ label: 'Mood', data: values, borderColor: accent, backgroundColor: hexToRgba(accent,.18), tension:.35, pointRadius:3, pointHoverRadius:5 }] },
+      data: { labels, datasets: [{ label: 'Mood', data: values, borderColor: accent, backgroundColor: hexToRgba(accent,.18), tension:.35, pointRadius:pRadius, pointHoverRadius:6, pointBackgroundColor:pBg, pointBorderColor:pBorder }] },
       options: { scales: { y: { min:0, max:100 } }, plugins:{ legend:{ display:false } }, responsive:true, maintainAspectRatio:false }
     });
   }
@@ -342,6 +356,7 @@
     updateLast();
     renderList();
     renderChart();
+    renderHomeExtras();
     renderTips();
     updateStats();
     renderHeatmap();
@@ -393,9 +408,11 @@
       const pills = document.querySelectorAll('#statPills .pill span');
       if(pills.length>=4){ pills[0].textContent = T[STATE.lang].avg; pills[1].textContent = T[STATE.lang].median; pills[2].textContent = T[STATE.lang].min; pills[3].textContent = T[STATE.lang].max; }
     }
+    populateStates();
     updateLast();
     renderList();
     renderChart();
+    renderHomeExtras();
     renderTips();
     updateStats();
     renderHeatmap();
@@ -460,10 +477,11 @@
     else if(program==='thunder') drawThunder(ctx, pal, t);
   }
   function drawAurora(ctx, pal, t){
+    const lvl = getLatestValue()/100;
     const g = ctx.createLinearGradient(0,0,bgW, bgH);
-    g.addColorStop(0, hexToRgba(pal.accent, .08));
-    g.addColorStop(.5, hexToRgba(pal.accent, .14));
-    g.addColorStop(1, hexToRgba(pal.accent, .08));
+    g.addColorStop(0, hexToRgba(pal.accent, .06 + .1*lvl));
+    g.addColorStop(.5, hexToRgba(pal.accent, .10 + .15*lvl));
+    g.addColorStop(1, hexToRgba(pal.accent, .06 + .1*lvl));
     ctx.fillStyle = g;
     const y = bgH*0.2 + Math.sin(t*0.4)*40;
     ctx.beginPath();
@@ -477,7 +495,8 @@
   }
   const bubbles = Array.from({length:30},()=>({x:Math.random(), y:Math.random(), r:Math.random()*6+3, v:(.2+Math.random())*0.02}));
   function drawBubbles(ctx, pal, t){
-    ctx.globalAlpha = .25;
+    const lvl = getLatestValue()/100;
+    ctx.globalAlpha = .15 + .25*lvl;
     ctx.fillStyle = pal.accent;
     for(const b of bubbles){
       const x = b.x*bgW;
@@ -487,14 +506,16 @@
     ctx.globalAlpha = 1;
   }
   function drawFire(ctx, pal, t){
+    const lvl = getLatestValue()/100;
     const grd = ctx.createLinearGradient(0,bgH,0,bgH*0.6);
     grd.addColorStop(0, hexToRgba('#000', 0));
-    grd.addColorStop(1, hexToRgba(pal.accent, .15));
+    grd.addColorStop(1, hexToRgba(pal.accent, .10 + .2*lvl));
     ctx.fillStyle = grd;
     ctx.fillRect(0, bgH*0.6 + Math.sin(t*3)*6, bgW, bgH*0.4);
   }
   function drawRain(ctx, pal, t){
-    ctx.strokeStyle = hexToRgba(pal.accent, .18);
+    const lvl = getLatestValue()/100;
+    ctx.strokeStyle = hexToRgba(pal.accent, .08 + .2*lvl);
     ctx.lineWidth = 1.2;
     for(let i=0;i<120;i++){
       const x = (i*73 % bgW);
@@ -516,6 +537,52 @@
     stateSelect.innerHTML = LONG_STATES.map(s=>`<option value="${s.id}">${STATE.lang==='ru'?s.ru:s.en}</option>`).join('');
     stateSelect.value = STATE.longState;
     dayNightToggle.checked = !!STATE.night;
+  }
+
+  // Home extras: sparkline + recent dots
+  function renderHomeExtras(){
+    try{
+      renderSparkline();
+      renderRecentDots();
+    }catch{}
+  }
+  function renderSparkline(){
+    if(!homeSpark) return;
+    const ctx = homeSpark.getContext('2d');
+    const W = homeSpark.width = homeSpark.clientWidth * devicePixelRatio;
+    const H = homeSpark.height = 36 * devicePixelRatio;
+    ctx.clearRect(0,0,W,H);
+    const data = STATE.entries.slice(-24);
+    if(!data.length) return;
+    const xs = data.map((_,i)=> i/(data.length-1));
+    const ys = data.map(e=> 1 - Math.max(0, Math.min(100, e.value))/100);
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4f7cff';
+    // area
+    ctx.beginPath();
+    ctx.moveTo(0, H*ys[0]);
+    for(let i=1;i<xs.length;i++) ctx.lineTo(W*xs[i], H*ys[i]);
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+    ctx.fillStyle = hexToRgba(accent, .15);
+    ctx.fill();
+    // line
+    ctx.beginPath();
+    ctx.moveTo(0, H*ys[0]);
+    for(let i=1;i<xs.length;i++) ctx.lineTo(W*xs[i], H*ys[i]);
+    ctx.strokeStyle = accent; ctx.lineWidth = 2*devicePixelRatio; ctx.stroke();
+  }
+  function renderRecentDots(){
+    if(!homeRecentRow) return;
+    const data = STATE.entries.slice(-24).reverse();
+    homeRecentRow.innerHTML = '';
+    for(const e of data){
+      const t = Math.max(0, Math.min(100, e.value));
+      const hue = (t/100)*120;
+      const el = document.createElement('div');
+      el.className = 'dot';
+      el.title = `${fmtDate(e.date)} · ${t}`;
+      el.style.background = `hsl(${hue},70%,55%)`;
+      homeRecentRow.appendChild(el);
+    }
   }
 
   // Export
@@ -556,6 +623,13 @@
     btn.addEventListener('click', () => {
       if(btn.id === 'fineBtn'){ openSheet(); return; }
       if(btn.id === 'moreEmojiBtn'){ openEmojiPanel(); return; }
+      // Map quick emojis to long states
+      const emotion = btn.dataset.emotion;
+      if(emotion){
+        const map = { sad:'sadness', neutral:'calm', joy:'joy', anger:'anger' };
+        const target = map[emotion];
+        if(target){ STATE.longState = target; if(stateSelect){ stateSelect.value = target; } applyTheme(); }
+      }
       const val = parseInt(btn.dataset.value, 10);
       addEntry(val);
       showToast(T[STATE.lang].saved);
@@ -654,6 +728,9 @@
       const b = document.createElement('button');
       b.className = 'emoji'; b.textContent = e.ch; b.title = e.id;
       b.addEventListener('click', (ev)=>{
+        // selecting in palette switches long state too
+        STATE.longState = e.id; if(stateSelect){ stateSelect.value = e.id; }
+        applyTheme();
         addEntry(e.v);
         showToast(T[STATE.lang].saved);
         vibrate(25);
@@ -666,6 +743,9 @@
   function openEmojiPanel(){ if(!emojiPanel) return; populateEmojiGrid(); emojiPanel.hidden = false; }
   function closeEmojiPanel(){ if(!emojiPanel) return; emojiPanel.hidden = true; }
   function addSplash(x,y){ if(!splashLayer) return; const d=document.createElement('div'); d.className='splash-dot'; d.style.left=`${x}px`; d.style.top=`${y}px`; splashLayer.appendChild(d); setTimeout(()=>d.remove(), 600); }
+
+  // Helpers
+  function getLatestValue(){ return STATE.entries.length ? STATE.entries[STATE.entries.length-1].value : 50; }
 
   setPinBtn.addEventListener('click', ()=>{
     const v = pinInput.value.trim();
@@ -710,4 +790,5 @@
   showSection('home');
   showLockIfNeeded();
   renderTips();
+  renderHomeExtras();
 })();
