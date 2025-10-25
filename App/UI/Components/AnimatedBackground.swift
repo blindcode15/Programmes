@@ -16,7 +16,7 @@ struct AnimatedBackground: View {
                         angle: .degrees(deg)
                     )
                 )
-                .opacity(0.12)
+                .opacity(0.2)
                 .ignoresSafeArea()
         }
     }

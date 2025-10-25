@@ -25,22 +25,19 @@ struct ContentView: View {
                 .tabItem { Label("Home", systemImage: "house.fill") }
                 .tag(0)
 
-                NavigationStack { HistoryView() }
-                    .tabItem { Label("History", systemImage: "clock.fill") }
-                    .tag(1)
-
                 NavigationStack { ChartsView() }
                     .tabItem { Label("Charts", systemImage: "chart.xyaxis.line") }
-                    .tag(2)
+                    .tag(1)
 
                 NavigationStack { TipsView() }
                     .tabItem { Label("Tips", systemImage: "lightbulb.fill") }
-                    .tag(3)
+                    .tag(2)
             }
             .animation(.easeInOut(duration: 0.25), value: selectedTab)
         }
         .environmentObject(moodVM)
         .environmentObject(chartsVM)
+        .environment(\.themePalette, palette)
         .sheet(isPresented: $showFineTune) {
             FineTuneSheet(isPresented: $showFineTune)
                 .presentationDetents([.fraction(0.4), .medium])

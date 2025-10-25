@@ -10,3 +10,4 @@ npx jsrepo add https://reactbits.dev/default/Components/Carousel
 npx jsrepo add https://reactbits.dev/default/Components/ElasticSlider
 npx jsrepo add https://reactbits.dev/default/Components/AnimatedList
 npx jsrepo add https://reactbits.dev/default/Backgrounds/LiquidEther
+npx jsrepo add https://reactbits.dev/default/Backgrounds/Lightning

@@ -25,17 +25,33 @@ struct ChartsView: View {
             }
 
             Chart(vm.series()) { entry in
+                AreaMark(
+                    x: .value("Date", entry.date),
+                    y: .value("Value", entry.value)
+                )
+                .interpolationMethod(.catmullRom)
+                .foregroundStyle(
+                    LinearGradient(colors: [Color.accentColor.opacity(0.35), Color.accentColor.opacity(0.05)], startPoint: .top, endPoint: .bottom)
+                )
+
                 LineMark(
                     x: .value("Date", entry.date),
                     y: .value("Value", entry.value)
                 )
+                .interpolationMethod(.catmullRom)
+                .foregroundStyle(Color.accentColor)
+                .lineStyle(StrokeStyle(lineWidth: 2.0, lineCap: .round))
+
                 PointMark(
                     x: .value("Date", entry.date),
                     y: .value("Value", entry.value)
                 )
+                .symbol(.circle)
+                .foregroundStyle(Color.accentColor)
             }
             .frame(height: 220)
             .chartYScale(domain: 0...100)
+            .animation(.easeInOut(duration: 0.4), value: vm.selected)
 
             Text("Heatmap by hour")
                 .font(.headline)
