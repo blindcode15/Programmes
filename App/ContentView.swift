@@ -43,7 +43,7 @@ struct ContentView: View {
         .sheet(isPresented: $showFineTune) {
             FineTuneSheet(isPresented: $showFineTune)
                 .presentationDetents([.fraction(0.4), .medium])
-                .presentationCornerRadius(16)
+                .modifier(PresentationCornerRadiusIfAvailable(radius: 16))
         }
         .tint(palette.accent)
         .task {
@@ -63,6 +63,18 @@ struct ContentView: View {
             }
         }
         .onChange(of: selectedTab) { _ in Haptics.fire(.light) }
+    }
+}
+
+// MARK: - Conditional corner radius for sheet (older toolchains)
+private struct PresentationCornerRadiusIfAvailable: ViewModifier {
+    let radius: CGFloat
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content.presentationCornerRadius(radius)
+        } else {
+            content
+        }
     }
 }
 

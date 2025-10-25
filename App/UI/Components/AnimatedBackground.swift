@@ -20,7 +20,7 @@ struct AnimatedBackground: View {
                     )
                     .opacity(moodState.background.opacity)
                 if moodState.background.swirl {
-                    RadialGradient(colors: [palette.accent.opacity(0.25), .clear], center: .center, startRadius: 20, endRadius: 240)
+                    RadialGradient(gradient: Gradient(colors: [palette.accent.opacity(0.25), .clear]), center: .center, startRadius: 20, endRadius: 240)
                         .blendMode(.plusLighter)
                         .opacity(0.5)
                         .scaleEffect(1.0 + 0.03 * sin(t / 2.0))
