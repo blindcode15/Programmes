@@ -22,10 +22,7 @@ final class ScreenshotsTests: XCTestCase {
             .environmentObject(ChartsViewModel())
         writePNG(render(hosting: home, size: size), name: "HomeView")
 
-        // History
-        let history = HistoryView()
-            .environmentObject(MoodStore.shared)
-        writePNG(render(hosting: history, size: size), name: "HistoryView")
+        // History snapshot removed (History is merged into Home). If needed, render Home's recent section instead.
 
         // Charts
         let charts = ChartsView()

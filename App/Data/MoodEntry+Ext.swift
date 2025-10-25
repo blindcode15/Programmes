@@ -7,7 +7,7 @@ public extension MoodEntry {
         // Use coarse buckets on 0..100
         switch v {
         case 0..<20: return "😞"
-        case 20..<40: return "�"
+        case 20..<40: return "😟"
         case 40..<60: return "😐"
         case 60..<80: return "🙂"
         default: return "😄"

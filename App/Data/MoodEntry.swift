@@ -1,6 +1,7 @@
+// Disabled legacy extension (0..10 scale). Kept for history; not compiled.
+#if false
 import Foundation
 
-// Extension for convenience on the shared MoodEntry model
 public extension MoodEntry {
     var emoji: String {
         switch value {
@@ -11,3 +12,4 @@ public extension MoodEntry {
         }
     }
 }
+#endif

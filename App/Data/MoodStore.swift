@@ -1,6 +1,7 @@
+// Disabled legacy shim in favor of MoodStore+Shim.swift
+#if false
 import Foundation
 
-// Shim API matching the requested interface while using the existing MoodStore
 public extension MoodStore {
     func load() -> [MoodEntry] { entries }
 
@@ -20,3 +21,4 @@ public extension MoodStore {
         exportCSV().data(using: .utf8) ?? Data()
     }
 }
+#endif
