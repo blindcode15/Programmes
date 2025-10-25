@@ -17,17 +17,25 @@
       <button class="nav-btn" data-target="tips" id="navTips">Советы</button>
       <button class="nav-btn" data-target="settings" id="navSettings">Настройки</button>
     </nav>
+    <div class="theme-controls">
+      <select id="stateSelect" title="Длительное состояние"></select>
+      <label class="switch">
+        <input type="checkbox" id="dayNightToggle" />
+        <span class="slider-ck"></span>
+      </label>
+    </div>
   </header>
 
   <main class="page">
     <!-- Home -->
     <section class="widget" id="homeSection">
       <div class="widget-row">
-        <button class="emoji" data-value="1">😞</button>
-        <button class="emoji" data-value="4">😐</button>
-        <button class="emoji" data-value="7">🙂</button>
-        <button class="emoji" data-value="9">😄</button>
+        <button class="emoji emo-sad" data-emotion="sad" data-value="10">😞</button>
+        <button class="emoji emo-neutral" data-emotion="neutral" data-value="40">😐</button>
+        <button class="emoji emo-joy" data-emotion="joy" data-value="70">🙂</button>
+        <button class="emoji emo-anger" data-emotion="anger" data-value="90">😄</button>
         <button class="emoji fine" id="fineBtn" title="Точно/подробно">🎚️</button>
+        <button class="emoji more" id="moreEmojiBtn" title="Больше эмоций">✨</button>
       </div>
       <div class="last-value" id="lastValue">Последнее: —</div>
       <div class="undo" id="undoBar" hidden>
@@ -66,11 +74,11 @@
   <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <header class="sheet-header">
       <h2 id="sheetTitle">Точно</h2>
-      <div class="value" id="sheetValue">5 / 10</div>
+      <div class="value" id="sheetValue">50 / 100</div>
     </header>
     <div class="sheet-body">
       <label for="slider" class="sr-only">Настроение</label>
-      <input type="range" id="slider" min="0" max="10" step="1" value="5" aria-label="Настроение" />
+      <input type="range" id="slider" min="0" max="100" step="1" value="50" aria-label="Настроение" />
       <label for="note" class="sr-only">Заметка</label>
       <input type="text" id="note" placeholder="Коротко: что произошло?" aria-label="Заметка" />
     </div>
@@ -78,6 +86,12 @@
       <button class="btn" id="cancelBtn">Ничего</button>
       <button class="btn primary" id="saveBtn">Сохранить</button>
     </footer>
+  </aside>
+
+  <!-- Emoji palette -->
+  <aside class="panel" id="emojiPanel" hidden>
+    <h2>Эмоции</h2>
+    <div class="emoji-grid" id="emojiGrid" aria-label="Выбор эмоции"></div>
   </aside>
 
   <aside class="panel" id="settingsPanel" hidden>
@@ -129,6 +143,10 @@
       <div class="muted"><button class="link" id="forgotPinBtn" type="button">Забыли PIN?</button></div>
     </div>
   </div>
+
+  <!-- Animated background canvas and splash layer -->
+  <canvas id="bgCanvas"></canvas>
+  <div id="splashLayer" class="splash-layer" aria-hidden="true"></div>
 
   <script src="script.js"></script>
 </body>

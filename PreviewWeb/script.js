@@ -1,6 +1,30 @@
 (function(){
+  // Long-term emotional states (20) with day/night palettes and background program
+  const LONG_STATES = [
+    { id:'serenity', ru:'Спокойствие', en:'Serenity', day:{accent:'#5aa3ff', bg:'#f3f7ff', bg2:'#e9f1ff'}, night:{accent:'#86c5ff', bg:'#0a0d14', bg2:'#0e1420'}, program:'aurora' },
+    { id:'joy', ru:'Радость', en:'Joy', day:{accent:'#ffd166', bg:'#fff7e6', bg2:'#ffe9b6'}, night:{accent:'#ffd166', bg:'#20160a', bg2:'#2a1b0c'}, program:'bubbles' },
+    { id:'love', ru:'Любовь', en:'Love', day:{accent:'#ff8fab', bg:'#fff0f4', bg2:'#ffe1ea'}, night:{accent:'#ff9fba', bg:'#1b0f13', bg2:'#230f18'}, program:'bubbles' },
+    { id:'hope', ru:'Надежда', en:'Hope', day:{accent:'#7be495', bg:'#eefbf2', bg2:'#dff7e6'}, night:{accent:'#9cf0b1', bg:'#0f1713', bg2:'#102018'}, program:'aurora' },
+    { id:'pride', ru:'Гордость', en:'Pride', day:{accent:'#9c6cff', bg:'#f4eefe', bg2:'#e7dbff'}, night:{accent:'#b592ff', bg:'#130f1b', bg2:'#1a1426'}, program:'aurora' },
+    { id:'curiosity', ru:'Интерес', en:'Curiosity', day:{accent:'#5ad1ff', bg:'#eafaff', bg2:'#d7f4ff'}, night:{accent:'#84e2ff', bg:'#0a1216', bg2:'#0b1820'}, program:'aurora' },
+    { id:'calm', ru:'Умиротворение', en:'Calm', day:{accent:'#64b5f6', bg:'#ecf6ff', bg2:'#dfefff'}, night:{accent:'#64b5f6', bg:'#0b0c0f', bg2:'#0f1218'}, program:'aurora' },
+    { id:'focus', ru:'Сосредоточенность', en:'Focus', day:{accent:'#6ce0ff', bg:'#eefbff', bg2:'#ddf7ff'}, night:{accent:'#6ce0ff', bg:'#091216', bg2:'#0b1820'}, program:'aurora' },
+    { id:'determination', ru:'Решимость', en:'Determination', day:{accent:'#ffa05a', bg:'#fff1e8', bg2:'#ffe2cf'}, night:{accent:'#ffb07a', bg:'#1c120b', bg2:'#24160c'}, program:'fire' },
+    { id:'excitement', ru:'Волнение', en:'Excitement', day:{accent:'#ff7ab7', bg:'#fff0f7', bg2:'#ffe1ef'}, night:{accent:'#ff8dc2', bg:'#1b0f18', bg2:'#240f1f'}, program:'bubbles' },
+    { id:'nostalgia', ru:'Ностальгия', en:'Nostalgia', day:{accent:'#ffa8a8', bg:'#fff1f1', bg2:'#ffe3e3'}, night:{accent:'#ffb3b3', bg:'#1a1010', bg2:'#211213'}, program:'aurora' },
+    { id:'melancholy', ru:'Меланхолия', en:'Melancholy', day:{accent:'#7aa0ff', bg:'#eef2ff', bg2:'#e2e7ff'}, night:{accent:'#8eb0ff', bg:'#0e1119', bg2:'#121624'}, program:'aurora' },
+    { id:'sadness', ru:'Грусть', en:'Sadness', day:{accent:'#64b5f6', bg:'#eef7ff', bg2:'#e0f0ff'}, night:{accent:'#64b5f6', bg:'#0b0e14', bg2:'#0f141c'}, program:'rain' },
+    { id:'anxiety', ru:'Тревога', en:'Anxiety', day:{accent:'#ffad66', bg:'#fff3e9', bg2:'#ffe8d5'}, night:{accent:'#ffc089', bg:'#1c140c', bg2:'#24190e'}, program:'thunder' },
+    { id:'anger', ru:'Злость', en:'Anger', day:{accent:'#ff6b4a', bg:'#fff0ec', bg2:'#ffe0d9'}, night:{accent:'#ff7d61', bg:'#1d0e0b', bg2:'#26100d'}, program:'fire' },
+    { id:'fear', ru:'Страх', en:'Fear', day:{accent:'#9aa3b2', bg:'#f3f5f8', bg2:'#e7ebf2'}, night:{accent:'#9aa3b2', bg:'#0b0c0f', bg2:'#0e1116'}, program:'thunder' },
+    { id:'shame', ru:'Стыд', en:'Shame', day:{accent:'#ff99a0', bg:'#fff0f2', bg2:'#ffe1e4'}, night:{accent:'#ff9faa', bg:'#1b0e11', bg2:'#221116'}, program:'aurora' },
+    { id:'guilt', ru:'Вина', en:'Guilt', day:{accent:'#bfa3ff', bg:'#f7f1ff', bg2:'#efe3ff'}, night:{accent:'#ceb6ff', bg:'#130f1b', bg2:'#1a1426'}, program:'aurora' },
+    { id:'fatigue', ru:'Усталость', en:'Fatigue', day:{accent:'#a0b3c8', bg:'#f1f5f8', bg2:'#e4ebf1'}, night:{accent:'#a0b3c8', bg:'#0c0f14', bg2:'#10141a'}, program:'rain' },
+    { id:'despair', ru:'Отчаяние', en:'Despair', day:{accent:'#a0a4aa', bg:'#f3f4f6', bg2:'#e8eaee'}, night:{accent:'#aeb3bb', bg:'#0a0b0d', bg2:'#0e1116'}, program:'thunder' },
+  ];
+
   // State and elements
-  const STATE = { entries: [], lang: 'ru', chart: null };
+  const STATE = { entries: [], lang: 'ru', chart: null, longState: LONG_STATES[0].id, night: true };
   const KEYS = { entries: 'moodEntriesV1', lang: 'lang', pin: 'pin', unlocked: 'pinUnlocked' };
 
   const lastValueEl = document.getElementById('lastValue');
@@ -35,6 +59,7 @@
   const note = document.getElementById('note');
   const sheetValue = document.getElementById('sheetValue');
   const fineBtn = document.getElementById('fineBtn');
+  const moreEmojiBtn = document.getElementById('moreEmojiBtn');
   const saveBtn = document.getElementById('saveBtn');
   const cancelBtn = document.getElementById('cancelBtn');
 
@@ -52,11 +77,18 @@
   const pinInput = document.getElementById('pinInput');
   const setPinBtn = document.getElementById('setPinBtn');
   const clearPinBtn = document.getElementById('clearPinBtn');
+  // Theme/UI additions
+  const stateSelect = document.getElementById('stateSelect');
+  const dayNightToggle = document.getElementById('dayNightToggle');
+  const emojiPanel = document.getElementById('emojiPanel');
+  const emojiGrid = document.getElementById('emojiGrid');
+  const splashLayer = document.getElementById('splashLayer');
+  const bgCanvas = document.getElementById('bgCanvas');
 
   const T = {
     ru: {
       lastNone: 'Последнее: —',
-      last: v => `Последнее: ${v}/10`,
+      last: v => `Последнее: ${v}`,
       saved: 'Сохранено',
       precise: 'Точно',
       nothing: 'Ничего',
@@ -90,7 +122,7 @@
     },
     en: {
       lastNone: 'Last: —',
-      last: v => `Last: ${v}/10`,
+      last: v => `Last: ${v}`,
       saved: 'Saved',
       precise: 'Fine-tune',
       nothing: 'Nothing',
@@ -126,24 +158,24 @@
 
   // Phrases bank (embedded, mirrors PhrasesBank.json)
   const PHRASES = {
-    '0-2': [
+    '0-20': [
       'Тяжёлый момент — это не навсегда.',
       'Подыши глубже, дай себе 2 минуты тишины.',
       'Напомни себе: ты уже справлялся раньше.'
     ],
-    '3-4': [
+    '21-40': [
       'Кажется, всё тянет вниз — сделай один маленький шаг.',
       'Стакан воды и короткая прогулка могут помочь.'
     ],
-    '5': [
+    '41-60': [
       'Нейтрально — тоже состояние. Что одно маленькое улучшит день?',
       'Проверь базовые потребности: сон, вода, еда.'
     ],
-    '6-8': [
+    '61-80': [
       'Отмечай приятные мелочи — они накапливаются.',
       'Поддержи это состояние: музыка, движение, свет.'
     ],
-    '9-10': [
+    '81-100': [
       'Класс! Зафиксируй, что помогло — пригодится потом.',
       'Поделись теплом с кем-то ещё — усилит эффект.'
     ]
@@ -154,7 +186,7 @@
     try { return d.toLocaleString(STATE.lang === 'ru' ? 'ru-RU' : 'en-US'); }
     catch { return d.toLocaleString(); }
   }
-  function emoji(v){ return v<3?'😞': v<5?'😐': v<8?'🙂':'😄'; }
+  function emoji(v){ return v<25?'😞': v<50?'😐': v<75?'🙂':'😄'; }
   function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
 
   // Storage
@@ -184,13 +216,21 @@
     }
   }
   function renderList(){
-    entriesEl.innerHTML = STATE.entries.slice().reverse().map(e => (
-      `<div class="entry">
-        <div><span style="font-size:20px;margin-right:8px">${emoji(e.value)}</span><strong>${e.value}/10</strong></div>
-        ${e.note ? `<div style="margin-top:6px">${escapeHtml(e.note)}</div>` : ''}
-        <div class="date">${fmtDate(e.date)}</div>
-      </div>`
-    )).join('');
+    entriesEl.innerHTML = STATE.entries.slice().reverse().map(e => {
+      const t = (e.value|0);
+      const hue = (t/100)*120;
+      return `
+      <div class="entry">
+        <div style="display:flex; align-items:center; gap:8px">
+          <div style="font-size:20px">${emoji(t)}</div>
+          <div style="flex:1">
+            ${e.note ? `<div>${escapeHtml(e.note)}</div>` : '<div class="muted"> </div>'}
+            <div class="date">${fmtDate(e.date)}</div>
+          </div>
+        </div>
+        <div class="bar" style="margin-top:8px; background: linear-gradient(90deg, hsla(${hue},70%,55%,.9), hsla(${Math.max(0,hue-40)},70%,55%,.9)); width:${t}%;"></div>
+      </div>`;
+    }).join('');
   }
   function filteredByRange(){
     const now = new Date();
@@ -208,12 +248,20 @@
     const data = filteredByRange();
     const labels = data.map(e => e.date.toLocaleDateString(STATE.lang==='ru'?'ru-RU':'en-US', {month:'short', day:'numeric'}));
     const values = data.map(e => e.value);
-    if(STATE.chart){ STATE.chart.data.labels = labels; STATE.chart.data.datasets[0].data = values; STATE.chart.update(); return; }
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4f7cff';
+    if(STATE.chart){
+      STATE.chart.data.labels = labels;
+      STATE.chart.data.datasets[0].data = values;
+      STATE.chart.data.datasets[0].borderColor = accent;
+      STATE.chart.data.datasets[0].backgroundColor = hexToRgba(accent, .18);
+      STATE.chart.update();
+      return;
+    }
     const ctx = chartCanvas.getContext('2d');
     STATE.chart = new Chart(ctx, {
       type: 'line',
-      data: { labels, datasets: [{ label: 'Mood', data: values, borderColor: '#4f7cff', backgroundColor: 'rgba(79,124,255,.2)', tension:.3, pointRadius:3 }] },
-      options: { scales: { y: { min:0, max:10 } }, plugins:{ legend:{ display:false } }, responsive:true, maintainAspectRatio:false }
+      data: { labels, datasets: [{ label: 'Mood', data: values, borderColor: accent, backgroundColor: hexToRgba(accent,.18), tension:.35, pointRadius:3, pointHoverRadius:5 }] },
+      options: { scales: { y: { min:0, max:100 } }, plugins:{ legend:{ display:false } }, responsive:true, maintainAspectRatio:false }
     });
   }
 
@@ -241,8 +289,8 @@
       for(let c=0;c<24;c++){
         const arr = grid[r][c];
         const avg = arr.length ? arr.reduce((s,v)=>s+v,0)/arr.length : 0;
-        const hue = avg/10*120;
-        const opacity = arr.length ? 0.75 : 0.08;
+        const hue = (avg/100)*120;
+        const opacity = arr.length ? Math.min(.8, .2 + arr.length*.1) : 0.08;
         const cell = document.createElement('div');
         cell.className='cell';
         cell.style.backgroundColor = `hsla(${hue}, 70%, 50%, ${opacity})`;
@@ -260,17 +308,17 @@
     const avg = arr => arr.length ? arr.reduce((s,e)=>s+e.value,0)/arr.length : NaN;
     const a = avg(last7), b = avg(prev7);
     const delta = (isNaN(a) || isNaN(b)) ? 0 : (a - b);
-    if(delta >= 1) return {kind:'up', delta};
-    if(delta <= -1) return {kind:'down', delta};
+    if(delta >= 10) return {kind:'up', delta};
+    if(delta <= -10) return {kind:'down', delta};
     return {kind:'flat', delta};
   }
 
   function phrasesFor(value){
-    if(value<=2) return PHRASES['0-2'];
-    if(value<=4) return PHRASES['3-4'];
-    if(value===5) return PHRASES['5'];
-    if(value<=8) return PHRASES['6-8'];
-    return PHRASES['9-10'];
+    if(value<=20) return PHRASES['0-20'];
+    if(value<=40) return PHRASES['21-40'];
+    if(value<=60) return PHRASES['41-60'];
+    if(value<=80) return PHRASES['61-80'];
+    return PHRASES['81-100'];
   }
 
   function renderTips(){
@@ -281,7 +329,7 @@
     const bank = phrasesFor(latest).slice().sort(()=>Math.random()-0.5).slice(0,3);
     const trendText = tr.kind==='up'?T[STATE.lang].trendUp: tr.kind==='down'?T[STATE.lang].trendDown: T[STATE.lang].trendFlat;
     tipsList.innerHTML = `
-      <div class="entry"><strong>${T[STATE.lang].today}: ${latest}/10</strong></div>
+      <div class="entry"><strong>${T[STATE.lang].today}: ${latest}</strong></div>
       <div class="entry">${trendText}</div>
       <div class="entry"><strong>${T[STATE.lang].mini}</strong></div>
       ${bank.map(p=>`<div class="entry">${p}</div>`).join('')}
@@ -313,10 +361,10 @@
 
   function openSheet(){
     sheet.classList.add('open'); sheetBackdrop.classList.add('open');
-    slider.value = 5; note.value=''; updateSheetValue();
+    slider.value = 50; note.value=''; updateSheetValue();
   }
   function closeSheet(){ sheet.classList.remove('open'); sheetBackdrop.classList.remove('open'); }
-  function updateSheetValue(){ sheetValue.textContent = `${slider.value} / 10`; }
+  function updateSheetValue(){ sheetValue.textContent = `${slider.value} / 100`; }
 
   // i18n apply
   function applyLang(){
@@ -364,6 +412,112 @@
     if(sec === 'chart') renderChart();
   }
 
+  // Theme and background
+  function hexToRgba(hex, a){
+    const m = hex.trim().match(/^#([0-9a-f]{6})$/i);
+    if(!m) return `rgba(79,124,255,${a})`;
+    const i = parseInt(m[1],16);
+    const r=(i>>16)&255, g=(i>>8)&255, b=i&255;
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function applyTheme(){
+    const st = LONG_STATES.find(s=>s.id===STATE.longState) || LONG_STATES[0];
+    const pal = STATE.night ? st.night : st.day;
+    const root = document.documentElement;
+    root.style.setProperty('--accent', pal.accent);
+    root.style.setProperty('--bg', pal.bg);
+    root.style.setProperty('--bg2', pal.bg2);
+    // refresh chart colors
+    renderChart();
+    // restart background program
+    startBackgroundProgram(st.program, pal);
+  }
+  let bgCtx=null, bgW=0, bgH=0, bgRAF=0, bgProgram='';
+  function startBackgroundProgram(program, pal){
+    if(!bgCanvas) return;
+    cancelAnimationFrame(bgRAF);
+    bgProgram = program;
+    bgCtx = bgCanvas.getContext('2d');
+    onResize();
+    let t0 = performance.now();
+    function loop(ts){
+      const t = (ts - t0)/1000;
+      drawBackground(program, pal, t);
+      bgRAF = requestAnimationFrame(loop);
+    }
+    bgRAF = requestAnimationFrame(loop);
+  }
+  function onResize(){ if(!bgCanvas) return; bgW = bgCanvas.width = window.innerWidth; bgH = bgCanvas.height = window.innerHeight; }
+  window.addEventListener('resize', onResize);
+  function drawBackground(program, pal, t){
+    if(!bgCtx) return;
+    const ctx = bgCtx;
+    ctx.clearRect(0,0,bgW,bgH);
+    if(program==='aurora') drawAurora(ctx, pal, t);
+    else if(program==='bubbles') drawBubbles(ctx, pal, t);
+    else if(program==='fire') drawFire(ctx, pal, t);
+    else if(program==='rain') drawRain(ctx, pal, t);
+    else if(program==='thunder') drawThunder(ctx, pal, t);
+  }
+  function drawAurora(ctx, pal, t){
+    const g = ctx.createLinearGradient(0,0,bgW, bgH);
+    g.addColorStop(0, hexToRgba(pal.accent, .08));
+    g.addColorStop(.5, hexToRgba(pal.accent, .14));
+    g.addColorStop(1, hexToRgba(pal.accent, .08));
+    ctx.fillStyle = g;
+    const y = bgH*0.2 + Math.sin(t*0.4)*40;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for(let x=0;x<=bgW;x+=20){
+      const yy = y + Math.sin(t*0.8 + x*0.01)*30 + Math.sin(t*0.5 + x*0.02)*20;
+      ctx.lineTo(x, yy);
+    }
+    ctx.lineTo(bgW,0); ctx.lineTo(0,0); ctx.closePath();
+    ctx.fill();
+  }
+  const bubbles = Array.from({length:30},()=>({x:Math.random(), y:Math.random(), r:Math.random()*6+3, v:(.2+Math.random())*0.02}));
+  function drawBubbles(ctx, pal, t){
+    ctx.globalAlpha = .25;
+    ctx.fillStyle = pal.accent;
+    for(const b of bubbles){
+      const x = b.x*bgW;
+      const y = (b.y - (t*b.v)%1 + 1)%1 * bgH;
+      ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  function drawFire(ctx, pal, t){
+    const grd = ctx.createLinearGradient(0,bgH,0,bgH*0.6);
+    grd.addColorStop(0, hexToRgba('#000', 0));
+    grd.addColorStop(1, hexToRgba(pal.accent, .15));
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, bgH*0.6 + Math.sin(t*3)*6, bgW, bgH*0.4);
+  }
+  function drawRain(ctx, pal, t){
+    ctx.strokeStyle = hexToRgba(pal.accent, .18);
+    ctx.lineWidth = 1.2;
+    for(let i=0;i<120;i++){
+      const x = (i*73 % bgW);
+      const y = (t*200 + i*37) % (bgH+50) - 50;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x+4, y+10); ctx.stroke();
+    }
+  }
+  function drawThunder(ctx, pal, t){
+    if(Math.floor(t)%5===0 && (t%5)<.1){
+      ctx.fillStyle = hexToRgba('#fff', .08);
+      ctx.fillRect(0,0,bgW,bgH);
+    }
+    drawRain(ctx, pal, t);
+  }
+
+  // State controls
+  function populateStates(){
+    if(!stateSelect) return;
+    stateSelect.innerHTML = LONG_STATES.map(s=>`<option value="${s.id}">${STATE.lang==='ru'?s.ru:s.en}</option>`).join('');
+    stateSelect.value = STATE.longState;
+    dayNightToggle.checked = !!STATE.night;
+  }
+
   // Export
   function download(filename, text){
     const a = document.createElement('a');
@@ -401,10 +555,14 @@
   document.querySelectorAll('.emoji').forEach(btn => {
     btn.addEventListener('click', () => {
       if(btn.id === 'fineBtn'){ openSheet(); return; }
+      if(btn.id === 'moreEmojiBtn'){ openEmojiPanel(); return; }
       const val = parseInt(btn.dataset.value, 10);
       addEntry(val);
       showToast(T[STATE.lang].saved);
       vibrate(20);
+      btn.classList.remove('glow');
+      void btn.offsetWidth; // restart animation
+      btn.classList.add('glow');
     });
   });
   slider.addEventListener('input', () => { updateSheetValue(); vibrate(10); });
@@ -458,6 +616,57 @@
   enableNotifsBtn.addEventListener('click', enableNotifications);
   testNotifBtn.addEventListener('click', testNotification);
 
+  // Day/Night + State
+  if(stateSelect){
+    stateSelect.addEventListener('change', ()=>{ STATE.longState = stateSelect.value; applyTheme(); });
+  }
+  if(dayNightToggle){
+    dayNightToggle.addEventListener('change', ()=>{ STATE.night = dayNightToggle.checked; applyTheme(); });
+  }
+
+  // Emoji panel
+  const EMOJI_PRESETS = [
+    { id:'joy', ch:'😊', v:80 },
+    { id:'love', ch:'🥰', v:85 },
+    { id:'serenity', ch:'😌', v:60 },
+    { id:'hope', ch:'🤞', v:70 },
+    { id:'pride', ch:'😎', v:75 },
+    { id:'curiosity', ch:'🧐', v:65 },
+    { id:'calm', ch:'🌿', v:62 },
+    { id:'focus', ch:'🎯', v:60 },
+    { id:'determination', ch:'💪', v:72 },
+    { id:'excitement', ch:'🤩', v:78 },
+    { id:'nostalgia', ch:'📼', v:55 },
+    { id:'melancholy', ch:'🎧', v:40 },
+    { id:'sadness', ch:'😢', v:20 },
+    { id:'anxiety', ch:'😬', v:30 },
+    { id:'anger', ch:'😠', v:25 },
+    { id:'fear', ch:'😱', v:15 },
+    { id:'shame', ch:'🙈', v:30 },
+    { id:'guilt', ch:'😔', v:25 },
+    { id:'fatigue', ch:'😪', v:35 },
+    { id:'despair', ch:'💀', v:10 },
+  ];
+  function populateEmojiGrid(){
+    if(!emojiGrid) return;
+    emojiGrid.innerHTML = '';
+    for(const e of EMOJI_PRESETS){
+      const b = document.createElement('button');
+      b.className = 'emoji'; b.textContent = e.ch; b.title = e.id;
+      b.addEventListener('click', (ev)=>{
+        addEntry(e.v);
+        showToast(T[STATE.lang].saved);
+        vibrate(25);
+        addSplash(ev.clientX, ev.clientY);
+        closeEmojiPanel();
+      });
+      emojiGrid.appendChild(b);
+    }
+  }
+  function openEmojiPanel(){ if(!emojiPanel) return; populateEmojiGrid(); emojiPanel.hidden = false; }
+  function closeEmojiPanel(){ if(!emojiPanel) return; emojiPanel.hidden = true; }
+  function addSplash(x,y){ if(!splashLayer) return; const d=document.createElement('div'); d.className='splash-dot'; d.style.left=`${x}px`; d.style.top=`${y}px`; splashLayer.appendChild(d); setTimeout(()=>d.remove(), 600); }
+
   setPinBtn.addEventListener('click', ()=>{
     const v = pinInput.value.trim();
     try{ if(v){ localStorage.setItem(KEYS.pin, v); localStorage.removeItem(KEYS.unlocked); showToast(T[STATE.lang].pinSet); showLockIfNeeded(); } }catch{}
@@ -493,6 +702,8 @@
   try{ STATE.lang = localStorage.getItem(KEYS.lang) || (navigator.language?.startsWith('ru')?'ru':'en'); }catch{}
   langSelect.value = STATE.lang;
   STATE.entries = loadEntries();
+  populateStates();
+  applyTheme();
   applyLang();
   // Ensure a default active range
   if(!document.querySelector('.seg-btn.active') && rangeWeekBtn){ rangeWeekBtn.classList.add('active'); }
