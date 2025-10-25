@@ -97,12 +97,21 @@ jobs:
             -only-testing:MoodDiaryScreenshots \
             test \
             CODE_SIGNING_ALLOWED=NO \
+            | tee test-output.log \
             | xcpretty -c || true
-      - name: Collect snapshots
+      - name: Collect snapshots (from log)
         run: |
           mkdir -p snapshots
-          # Grab only our test PNGs (prefixed with MD_) from simulator temp dirs
-          find /private/var/folders -type f -name 'MD_*.png' -maxdepth 6 -print -exec cp -v {} snapshots/ \; 2>/dev/null || true
+          # First, parse xcodebuild raw output for absolute file paths printed by tests
+          if [ -f test-output.log ]; then
+            awk '/SNAPSHOT:/ {print substr($0, index($0,$2))}' test-output.log | while read -r p; do
+              if [ -f "$p" ]; then
+                cp -v "$p" snapshots/ || true
+              fi
+            done
+          fi
+          # Fallback: scan typical temp roots for our MD_*.png with deeper search
+          find /private/var/folders -type f -name 'MD_*.png' -maxdepth 12 -print -exec cp -v {} snapshots/ \; 2>/dev/null || true
           ls -la snapshots || true
       - name: Upload snapshots
         uses: actions/upload-artifact@v4
