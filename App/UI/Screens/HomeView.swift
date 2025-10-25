@@ -44,7 +44,7 @@ struct HomeView: View {
                         .padding(.top, 4)
 
                     VStack(spacing: 12) {
-                        ForEach(store.entries.suffix(8).reversed(), id: \.id) { e in
+                        ForEach(Array(store.entries.suffix(8).reversed()), id: \.id) { e in
                             Card {
                                 RecentRow(entry: e)
                             }
@@ -103,7 +103,7 @@ private struct RevealOnScroll: ViewModifier {
                 .opacity(progress)
                 .offset(y: (1 - progress) * 24)
                 .rotation3DEffect(.degrees((1 - progress) * 8), axis: (x: 1, y: 0, z: 0), anchor: .bottom)
-                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(0.12 * (1 - progress)), radius: 8, y: 6)
+                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(0.12 * (1 - progress)), radius: 8, x: 0, y: 6)
                 .animation(.spring(response: 0.6, dampingFraction: 0.8), value: progress)
         }
         .frame(height: 64)
