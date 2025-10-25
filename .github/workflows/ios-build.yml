@@ -64,7 +64,7 @@ jobs:
           tail -n 300 build-sim.log || true
           echo '--- Grep error/warning lines ---'
           grep -E "(error:|warning:)" -n build-sim.log || true
-      - name: Record short simulator video (app launch)
+      - name: Record simulator video (ensure app is visible)
         if: always()
         run: |
           set +e
@@ -108,12 +108,14 @@ jobs:
           else
             echo "App not found at $APP_PATH (build may have failed). Will record home screen."
           fi
-          # Start recording (force overwrite), run for ~22s for more motion
+          # Launch first to avoid capturing SpringBoard; give it a moment to settle
+          echo "Launching app with DEMO_MODE..."
+          xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
+          sleep 2
+          # Start recording (force overwrite)
           xcrun simctl io "$DEVICE" recordVideo --codec=h264 --force "$VIDEO" &
           REC_PID=$!
-          # Launch app in demo mode if we have a bundle; otherwise just wait on SpringBoard
-          xcrun simctl launch "$DEVICE" com.yourcompany.mood --args DEMO_MODE || true
-          SECONDS=22
+          SECONDS=26
           echo "Recording for $SECONDS seconds..."
           sleep $SECONDS
           kill $REC_PID 2>/dev/null || true
