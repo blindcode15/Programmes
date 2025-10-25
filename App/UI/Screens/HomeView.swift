@@ -102,12 +102,14 @@ private struct RevealOnScroll: ViewModifier {
         GeometryReader { proxy in
             let minY = proxy.frame(in: .named("scroll")).minY
             let height = proxy.size.height
-            let progress = max(0, min(1, (minY + height) / (height * 2))) // 0 at far below, 1 when fully in
+            // Compute progress as Double to avoid CGFloat/Double arithmetic ambiguity
+            let raw = Double((minY + height) / (height * 2))
+            let progress = max(0.0, min(1.0, raw)) // 0 at far below, 1 when fully in
             content
                 .opacity(progress)
-                .offset(y: (1 - progress) * 24)
-                .rotation3DEffect(.degrees((1 - progress) * 8), axis: (x: 1, y: 0, z: 0), anchor: .bottom)
-                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(shadowIntensity * (1 - progress)), radius: 8, x: 0, y: 6)
+                .offset(y: CGFloat((1.0 - progress) * 24.0))
+                .rotation3DEffect(.degrees((1.0 - progress) * 8.0), axis: (x: 1, y: 0, z: 0), anchor: .bottom)
+                .shadow(color: (scheme == .dark ? Color.black : Color.gray).opacity(shadowIntensity * (1.0 - progress)), radius: 8, x: 0, y: 6)
                 .animation(.spring(response: 0.6, dampingFraction: 0.8), value: progress)
         }
         .frame(height: 64)
