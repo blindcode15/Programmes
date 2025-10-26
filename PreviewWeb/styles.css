@@ -1,3 +1,16 @@
+/* Minor adjustments to align with simplified Home layout */
+.widget .emoji {
+  min-width: 48px;
+  min-height: 48px;
+}
+.widget-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+@media (min-width: 520px){
+  .widget-row { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
 :root{
   --accent:#5aa3ff;
   --bg:#0b0c0f;

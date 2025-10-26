@@ -12,7 +12,6 @@
     <div class="brand">Mood Diary (Preview)</div>
     <nav class="nav">
       <button class="nav-btn" data-target="home" id="navHome">Домой</button>
-      <button class="nav-btn" data-target="history" id="navHistory">История</button>
       <button class="nav-btn" data-target="chart" id="navChart">График</button>
       <button class="nav-btn" data-target="tips" id="navTips">Советы</button>
       <button class="nav-btn" data-target="settings" id="navSettings">Настройки</button>
@@ -31,12 +30,11 @@
     <!-- Home -->
     <section class="widget" id="homeSection">
       <div class="widget-row">
-        <button class="emoji emo-sad" data-emotion="sad" data-value="10">😞</button>
-        <button class="emoji emo-neutral" data-emotion="neutral" data-value="40">😐</button>
-        <button class="emoji emo-joy" data-emotion="joy" data-value="70">🙂</button>
-        <button class="emoji emo-anger" data-emotion="anger" data-value="90">😄</button>
+        <button class="emoji emo-joy" data-emotion="joy" data-value="95" title="Радость">�</button>
+        <button class="emoji emo-anxiety" data-emotion="anxiety" data-value="65" title="Тревога">�</button>
+        <button class="emoji emo-anger" data-emotion="anger" data-value="35" title="Злость">�</button>
+        <button class="emoji emo-sadness" data-emotion="sadness" data-value="5" title="Грусть">�</button>
         <button class="emoji fine" id="fineBtn" title="Точно/подробно">🎚️</button>
-        <button class="emoji more" id="moreEmojiBtn" title="Больше эмоций">✨</button>
       </div>
       <div class="last-value" id="lastValue">Последнее: —</div>
       <canvas id="homeSpark" height="36" style="width:100%;margin-top:8px"></canvas>
@@ -47,8 +45,7 @@
       </div>
     </section>
 
-    <!-- History -->
-    <section class="list" id="entries" aria-label="История" hidden></section>
+    <!-- History removed in preview to match native app -->
 
     <!-- Charts -->
     <section class="chart" id="chartSection" hidden>

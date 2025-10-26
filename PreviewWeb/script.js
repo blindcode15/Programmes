@@ -385,8 +385,8 @@
 
   // i18n apply
   function applyLang(){
-    if(navHome) navHome.textContent = T[STATE.lang].home;
-    navHistory.textContent = T[STATE.lang].history;
+  if(navHome) navHome.textContent = T[STATE.lang].home;
+  if(navHistory) navHistory.textContent = T[STATE.lang].history;
     navChart.textContent = T[STATE.lang].chart;
     navSettings.textContent = T[STATE.lang].settings;
     navTips.textContent = T[STATE.lang].tips;
@@ -422,9 +422,9 @@
 
   // Navigation
   function showSection(sec){
-    if(homeSection) homeSection.hidden = (sec !== 'home');
-    // Toggle each section directly
-    if(entriesEl) entriesEl.hidden = (sec !== 'history');
+  if(homeSection) homeSection.hidden = (sec !== 'home');
+  // Toggle each section directly (history can be absent in preview)
+  if(entriesEl) entriesEl.hidden = (sec !== 'history');
     chartSection.hidden = (sec !== 'chart');
     settingsPanel.hidden = (sec !== 'settings');
     tipsSection.hidden = (sec !== 'tips');
@@ -673,7 +673,7 @@
       // Map quick emojis to long states
       const emotion = btn.dataset.emotion;
       if(emotion){
-        const map = { sad:'sadness', neutral:'calm', joy:'joy', anger:'anger' };
+        const map = { sadness:'sadness', anxiety:'anxiety', joy:'joy', anger:'anger', sad:'sadness', neutral:'calm' };
         const target = map[emotion];
         if(target){ STATE.longState = target; if(stateSelect){ stateSelect.value = target; } applyTheme(); }
         // emit particles per emotion
@@ -699,7 +699,7 @@
   cancelBtn.addEventListener('click', () => { closeSheet(); });
   sheetBackdrop.addEventListener('click', () => { closeSheet(); });
 
-  navHistory.addEventListener('click', ()=> showSection('history'));
+  if(navHistory) navHistory.addEventListener('click', ()=> showSection('history'));
   navChart.addEventListener('click', ()=> showSection('chart'));
   navSettings.addEventListener('click', ()=> showSection('settings'));
   navTips.addEventListener('click', ()=> showSection('tips'));
