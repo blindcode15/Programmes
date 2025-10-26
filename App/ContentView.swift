@@ -73,12 +73,18 @@ struct ContentView: View {
                 var step = 0
                 demoTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
                     selectedTab = step % 3
-                    // also inject a visible change: add a small random entry to animate charts
-                    let base = Int.random(in: 20...85)
-                    let jitter = Int.random(in: -12...12)
-                    let val = max(0, min(100, base + jitter))
-                    let emos: [Emotion] = [.joy, .anxiety, .anger, .sadness]
-                    let emo = emos.randomElement()
+                    // Scripted variation for clearer demo visuals:
+                    // - Alternate around mid value with gentle jitter most ticks
+                    // - Every 3rd tick: push a phasic 'anger' burst (large delta) to highlight burst markers
+                    // - Keep within 0..100
+                    let mid = 58 + Int(10 * sin(Double(step) / 2.0))
+                    var val = max(0, min(100, mid + Int.random(in: -8...8)))
+                    var emo: Emotion = [.joy, .anxiety, .sadness].randomElement()!
+                    if step % 3 == 2 {
+                        // Force a noticeable change and phasic emotion
+                        val = max(0, min(100, val + Int.random(in: 16...28) * (Bool.random() ? 1 : -1)))
+                        emo = .anger
+                    }
                     MoodStore.shared.append(value: val, note: nil, emotion: emo)
                     step += 1
                 }

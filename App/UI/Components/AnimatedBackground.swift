@@ -34,17 +34,25 @@ private struct AuroraBackground: View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             Canvas { ctx, size in
-                let y = size.height * 0.25 + sin(t * speed * 0.8) * 24
-                var path = Path()
-                path.move(to: .init(x: 0, y: y))
-                stride(from: 0.0, through: size.width, by: 16).forEach { x in
-                    let yy = y + sin((t * speed * 1.2) + x * 0.02) * 20 + sin((t * speed * 0.7) + x * 0.04) * 14
-                    path.addLine(to: .init(x: x, y: yy))
+                func wave(yBase: CGFloat, phase: Double, amp1: Double, amp2: Double, opacity: Double) {
+                    var p = Path()
+                    p.move(to: .init(x: 0, y: yBase))
+                    stride(from: 0.0, through: size.width, by: 14).forEach { x in
+                        let yy = yBase + sin((t * speed * 1.1 + phase) + x * 0.024) * amp1 + sin((t * speed * 0.7 - phase) + x * 0.042) * amp2
+                        p.addLine(to: .init(x: x, y: yy))
+                    }
+                    p.addLine(to: .init(x: size.width, y: 0))
+                    p.addLine(to: .init(x: 0, y: 0))
+                    p.closeSubpath()
+                    ctx.fill(p, with: .linearGradient(
+                        Gradient(colors: [color.opacity(opacity * 0.4), color.opacity(opacity), color.opacity(opacity * 0.4)]),
+                        startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)
+                    ))
                 }
-                path.addLine(to: .init(x: size.width, y: 0))
-                path.addLine(to: .init(x: 0, y: 0))
-                path.closeSubpath()
-                ctx.fill(path, with: .linearGradient(Gradient(colors: [color.opacity(0.06), color.opacity(0.18), color.opacity(0.06)]), startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)))
+                let y = size.height * 0.25 + sin(t * speed * 0.8) * 24
+                wave(yBase: y, phase: 0.0, amp1: 20, amp2: 14, opacity: 0.18)
+                wave(yBase: y + 24, phase: .pi/3, amp1: 16, amp2: 10, opacity: 0.12)
+                wave(yBase: y - 22, phase: .pi*0.7, amp1: 14, amp2: 9, opacity: 0.10)
             }
             .opacity(opacity)
             .blendMode(.plusLighter)
@@ -93,10 +101,25 @@ private struct FireBackground: View {
     var body: some View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
-            LinearGradient(colors: [.clear, color.opacity(0.18), color.opacity(0.08)], startPoint: .center, endPoint: .bottom)
-                .offset(y: CGFloat(sin(t * 2.2) * 6))
-                .opacity(opacity)
-                .blendMode(.plusLighter)
+            ZStack {
+                LinearGradient(colors: [.clear, color.opacity(0.18), color.opacity(0.08)], startPoint: .center, endPoint: .bottom)
+                    .offset(y: CGFloat(sin(t * 2.2) * 6))
+                    .blendMode(.plusLighter)
+                // Ember particles rising
+                Canvas { ctx, size in
+                    var rng = SeededRandom(seed: 1337)
+                    for i in 0..<36 {
+                        let base = Double(i) / 36.0
+                        let x = Double(size.width) * (base + Double.random(in: -0.02...0.02, using: &rng)).truncatingRemainder(dividingBy: Double(size.width))
+                        let y = Double(size.height) - fmod(t * 30 + Double(i) * 22, Double(size.height))
+                        let r = CGFloat(1.0 + Double.random(in: 0...1, using: &rng))
+                        let alpha = 0.15 + 0.15 * sin(t * 6 + Double(i))
+                        let rect = CGRect(x: x, y: y, width: r, height: r)
+                        ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(alpha)))
+                    }
+                }
+            }
+            .opacity(opacity)
         }
     }
 }
@@ -210,12 +233,36 @@ private struct StarsBackground: View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             Canvas { ctx, size in
-                for i in 0..<140 {
-                    let x = fmod(Double(i) * 11.0 + t * 20.0, Double(size.width))
-                    let y = fmod(Double(i) * 7.0, Double(size.height))
-                    let r = CGFloat(0.6 + (i % 5 == 0 ? 1.2 : 0.3))
-                    let rect = CGRect(x: x, y: y, width: r, height: r)
-                    ctx.fill(Path(ellipseIn: rect), with: .color(.white.opacity(0.6)))
+                // Parallax star layers
+                let layers = [
+                    (count: 80, speed: 10.0, alpha: 0.5, scale: 1.0),
+                    (count: 60, speed: 18.0, alpha: 0.7, scale: 1.2),
+                    (count: 40, speed: 26.0, alpha: 0.9, scale: 1.4)
+                ]
+                var idx = 0
+                for layer in layers {
+                    for i in 0..<layer.count {
+                        let x = fmod(Double(i + idx) * 17.0 + t * layer.speed, Double(size.width))
+                        let y = fmod(Double(i + idx) * 9.0, Double(size.height))
+                        let base: CGFloat = (i % 7 == 0 ? 1.4 : 0.7)
+                        let r = base * layer.scale
+                        let rect = CGRect(x: x, y: y, width: r, height: r)
+                        ctx.fill(Path(ellipseIn: rect), with: .color(.white.opacity(layer.alpha)))
+                    }
+                    idx += layer.count
+                }
+
+                // Occasional shooting star
+                let period: Double = 5.5
+                let phase = fmod(t, period)
+                if phase < 0.6 { // brief flyby window
+                    let prog = phase / 0.6 // 0..1
+                    let sx = Double(size.width) * (1.0 - prog)
+                    let sy = Double(size.height) * (0.2 + 0.2 * sin(t))
+                    var path = Path()
+                    path.move(to: CGPoint(x: sx, y: sy))
+                    path.addLine(to: CGPoint(x: sx + 60, y: sy + 18))
+                    ctx.stroke(path, with: .color(.white.opacity(0.85)), lineWidth: 1.5)
                 }
             }
             .overlay(

@@ -160,6 +160,79 @@ jobs:
         with:
           name: xcresults
           path: xcresults
+    - name: Export xcresult summaries (JSON + HTML)
+    if: always()
+    run: |
+      set -e
+      mkdir -p xcresults-summary
+      FOUND=0
+      while IFS= read -r -d '' BUNDLE; do
+      FOUND=1
+      NAME=$(basename "$BUNDLE")
+      JSON="xcresults-summary/${NAME}.json"
+      HTML="xcresults-summary/${NAME}.html"
+      xcrun xcresulttool get --format json --path "$BUNDLE" > "$JSON" || true
+      JSON="$JSON" HTML="$HTML" python3 - << 'PY'
+import json, os
+jpath = os.environ.get('JSON')
+hpath = os.environ.get('HTML')
+try:
+  data = json.load(open(jpath,'r'))
+except Exception as e:
+  open(hpath,'w',encoding='utf-8').write('<!doctype html><meta charset="utf-8"><body style="font-family:system-ui;">No data: %s</body>'%e)
+  raise SystemExit(0)
+
+def collect_tests(obj, acc):
+  if isinstance(obj, dict):
+    name = obj.get('name')
+    status = obj.get('testStatus') or obj.get('status')
+    if name and status:
+      acc.append((name, str(status)))
+    for v in obj.values():
+      collect_tests(v, acc)
+  elif isinstance(obj, list):
+    for v in obj:
+      collect_tests(v, acc)
+
+tests=[]
+collect_tests(data, tests)
+passed = sum(1 for _,s in tests if s.lower()=='success')
+failed = sum(1 for _,s in tests if s.lower() in ('failure','fail','failed','error'))
+total = len(tests)
+html = []
+html.append('<!doctype html><meta charset="utf-8"><title>xcresult summary</title>')
+html.append('<style>body{font-family:system-ui,Segoe UI,Arial;margin:20px;color:#e8f0ff;background:#0b0f14} .muted{color:#93a0b6} table{border-collapse:collapse;width:100%} td,th{border:1px solid #223046;padding:6px 8px} th{background:#121822} .ok{color:#63d483} .bad{color:#ff7a7a}</style>')
+html.append(f'<h1 style="margin:0 0 8px">xcresult: {os.path.basename(jpath)}</h1>')
+html.append(f'<div class="muted">Total: {total} • <span class="ok">Passed: {passed}</span> • <span class="bad">Failed: {failed}</span></div>')
+html.append('<table><tr><th>Test</th><th>Status</th></tr>')
+for name, status in tests:
+  css = 'ok' if status.lower()=='success' else ('bad' if status.lower() in ('failure','fail','failed','error') else 'muted')
+  html.append(f'<tr><td>{name}</td><td class="{css}">{status}</td></tr>')
+html.append('</table>')
+open(hpath,'w',encoding='utf-8').write('\n'.join(html))
+PY
+      done < <(find xcresults -type d -name "*.xcresult" -print0 2>/dev/null || true)
+      # Create an index page
+      python3 - << 'PY'
+import os, glob
+items = sorted(glob.glob('xcresults-summary/*.html'))
+out = ['<!doctype html><meta charset="utf-8"><title>xcresults index</title><style>body{font-family:system-ui,Segoe UI,Arial;margin:20px;color:#e8f0ff;background:#0b0f14} a{color:#7cc8ff;text-decoration:none} a:hover{text-decoration:underline} .muted{color:#93a0b6}</style><h1>xcresults</h1>']
+if not items:
+  out.append('<p class="muted">No summaries generated.</p>')
+else:
+  out.append('<ul>')
+  for f in items:
+    base=os.path.basename(f)
+    out.append(f'<li><a href="{base}">{base}</a></li>')
+  out.append('</ul>')
+open('xcresults-summary/index.html','w',encoding='utf-8').write('\n'.join(out))
+PY
+    - name: Upload xcresult summaries
+    if: always()
+    uses: actions/upload-artifact@v4
+    with:
+      name: xcresults-summary
+      path: xcresults-summary
       - name: Collect snapshots (from log)
         run: |
           mkdir -p snapshots
