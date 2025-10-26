@@ -530,33 +530,101 @@
     grd.addColorStop(1, hexToRgba(pal.accent, .10 + .2*lvl));
     ctx.fillStyle = grd;
     ctx.fillRect(0, bgH*0.6 + Math.sin(t*3)*6, bgW, bgH*0.4);
+    // Embers
+    const seed = Math.floor(t*60);
+    for(let i=0;i<40;i++){
+      const r = (i*97 + seed)%bgW;
+      const y = bgH - ((seed + i*33)%Math.floor(bgH*0.4));
+      const a = 0.15 + 0.15*Math.sin(t*6 + i);
+      ctx.fillStyle = hexToRgba(pal.accent, a);
+      ctx.beginPath(); ctx.arc(r, y, 1 + (i%3===0?1:0), 0, Math.PI*2); ctx.fill();
+    }
   }
   function drawRain(ctx, pal, t){
     const lvl = getLatestValue()/100;
     ctx.strokeStyle = hexToRgba(pal.accent, .08 + .2*lvl);
     ctx.lineWidth = 1.2;
-    for(let i=0;i<120;i++){
+    for(let i=0;i<140;i++){
       const x = (i*73 % bgW);
-      const y = (t*200 + i*37) % (bgH+50) - 50;
-      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x+4, y+10); ctx.stroke();
+      const y = (t*220 + i*37) % (bgH+50) - 50;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x+5, y+12); ctx.stroke();
+    }
+    // Ripples near the bottom
+    for(let k=0;k<8;k++){
+      const phase = (t*0.9 + k*0.73);
+      const u = (Math.sin(k*12.9898 + 78.233)*43758.5453)%1; // pseudo-rand 0..1
+      const x = Math.abs(u) * bgW;
+      const baseY = bgH - 8;
+      const prog = (Math.sin(phase)+1)/2;
+      const r = 8 + prog*12;
+      const alpha = 0.10*(1-prog);
+      ctx.strokeStyle = hexToRgba(pal.accent, alpha);
+      ctx.beginPath(); ctx.ellipse(x, baseY, r, r*0.4, 0, 0, Math.PI*2); ctx.stroke();
     }
   }
   function drawThunder(ctx, pal, t){
-    if(Math.floor(t)%5===0 && (t%5)<.1){
-      ctx.fillStyle = hexToRgba('#fff', .08);
-      ctx.fillRect(0,0,bgW,bgH);
-    }
+    // Global flash
+    const period = 5.0;
+    const phase = t % period;
+    if(phase < 0.15){ ctx.fillStyle = hexToRgba('#ffffff', 0.08); ctx.fillRect(0,0,bgW,bgH); }
     drawRain(ctx, pal, t);
+    // Lightning bolt with occasional branches
+    if(phase < 0.22){
+      const strikes = (Math.floor(t*3)%2) ? 2 : 1;
+      for(let s=0;s<strikes;s++){
+        const startX = bgW*0.2 + Math.random()*bgW*0.6;
+        let x = startX, y = 0;
+        ctx.lineWidth = 2; ctx.strokeStyle = hexToRgba('#fff', 0.9);
+        ctx.beginPath(); ctx.moveTo(x,y);
+        const segs = 10 + Math.floor(Math.random()*6);
+        for(let i=0;i<segs;i++){
+          x += (Math.random()*28 - 14);
+          y += (20 + Math.random()*24);
+          ctx.lineTo(x,y);
+          // Branches
+          if(Math.random()<0.25){
+            let bx=x, by=y; const bsegs=3+Math.floor(Math.random()*3);
+            ctx.save(); ctx.lineWidth=1; ctx.strokeStyle=hexToRgba('#fff',0.35);
+            ctx.beginPath(); ctx.moveTo(bx,by);
+            for(let j=0;j<bsegs;j++){ bx += (Math.random()*20-10); by += (12+Math.random()*18); ctx.lineTo(bx,by); }
+            ctx.stroke(); ctx.restore();
+          }
+        }
+        ctx.stroke();
+        // Glow
+        ctx.save(); ctx.lineWidth=6; ctx.strokeStyle = hexToRgba(pal.accent, 0.35);
+        ctx.beginPath(); ctx.moveTo(startX,0);
+        x=startX; y=0;
+        for(let i=0;i<segs;i++){ x += (Math.random()*28-14); y += (20+Math.random()*24); ctx.lineTo(x,y); }
+        ctx.stroke(); ctx.restore();
+      }
+    }
   }
   function drawStars(ctx, pal, t){
     const lvl = getLatestValue()/100;
-    const count = 140;
-    ctx.fillStyle = hexToRgba('#ffffff', .6);
-    for(let i=0;i<count;i++){
-      const x = (i*97 + (t*20) ) % bgW;
-      const y = (i*53 % bgH);
-      const r = 0.6 + (i%5===0? 1.2: 0.3) + lvl*0.8;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+    const layers = [
+      {count:80, speed:10, alpha:.5, scale:1.0},
+      {count:60, speed:18, alpha:.7, scale:1.2},
+      {count:40, speed:26, alpha:.9, scale:1.4},
+    ];
+    let idx = 0;
+    for(const L of layers){
+      for(let i=0;i<L.count;i++){
+        const x = ( (i+idx)*17 + t*L.speed ) % bgW;
+        const y = ( (i+idx)*9 ) % bgH;
+        const base = (i%7===0 ? 1.4 : 0.7);
+        const r = base * L.scale + lvl*0.4;
+        ctx.fillStyle = hexToRgba('#ffffff', L.alpha);
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
+      }
+      idx += L.count;
+    }
+    // Shooting star
+    const p = 5.5; const ph = t % p;
+    if(ph < 0.6){
+      const prog = ph/0.6, sx = bgW*(1-prog), sy = bgH*(0.2 + 0.2*Math.sin(t));
+      ctx.strokeStyle = hexToRgba('#ffffff', 0.85); ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx+60, sy+18); ctx.stroke();
     }
     // aurora haze
     drawAurora(ctx, pal, t*0.6);
@@ -872,6 +940,20 @@
   try{ STATE.lang = localStorage.getItem(KEYS.lang) || (navigator.language?.startsWith('ru')?'ru':'en'); }catch{}
   langSelect.value = STATE.lang;
   STATE.entries = loadEntries();
+  if(STATE.entries.length === 0){
+    // Seed demo entries to avoid blank pages on first open
+    const now = new Date();
+    for(let i=0;i<14;i++){
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate()-i);
+      for(const h of [9,14,21]){
+        const d = new Date(day.getFullYear(), day.getMonth(), day.getDate(), h);
+        const base = 55 + Math.round(25*Math.sin(i/3.5));
+        const val = Math.max(0, Math.min(100, base + Math.round((Math.random()*20)-10)));
+        STATE.entries.push({ id:String(Math.random()), date:d, value:val, note:null });
+      }
+    }
+    saveEntries();
+  }
   populateStates();
   applyTheme();
   applyLang();

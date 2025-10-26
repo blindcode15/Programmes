@@ -45,10 +45,15 @@
 </head>
 <body>
   <header>
-    <h1>iOS Diary – CI Artifacts Viewer</h1>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;">
+      <h1 style="margin:0;">iOS Diary – CI Artifacts Viewer</h1>
+      <nav class="crumbs" style="font-size:13px;">
+        <a class="pill" href="../index.html">← Back to Artifacts index</a>
+      </nav>
+    </div>
   </header>
   <main>
-    <section class="row">
+    <section class="row" id="video">
       <div class="card">
         <video id="demo" src="simulator-video/app-demo.mov" controls playsinline preload="metadata"></video>
         <div class="meta">
@@ -66,10 +71,11 @@
           <li>If the video won’t play in the browser, click Download and open with Films & TV or VLC.</li>
         </ul>
         <div class="hint">Windows tip: press <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> to toggle fullscreen in many players.</div>
+        <div class="hint" style="margin-top:6px;">If a link opens a blank page, that file wasn’t uploaded in this run. Check the <a class="pill" href="#xcode">Xcode Results</a> section names expected folders.</div>
       </div>
     </section>
 
-    <section>
+    <section id="snapshots">
       <h3 style="margin: 0 0 10px; font-size: 16px;">UI Snapshots</h3>
       <div class="grid">
         <figure>
@@ -95,7 +101,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="build-log">
       <h3 style="margin: 0 0 10px; font-size: 16px;">Build Log</h3>
       <div class="card">
         <div class="meta">
@@ -105,7 +111,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="xcode">
       <h3 style="margin: 0 0 10px; font-size: 16px;">Xcode Results</h3>
       <div class="card">
         <div class="meta">
