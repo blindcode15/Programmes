@@ -147,6 +147,19 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             | tee test-output.log \
             | xcpretty -c || true
+      - name: Collect xcresult bundles
+        if: always()
+        run: |
+          mkdir -p xcresults
+          # Copy any recent .xcresult bundles (build or test) for debugging
+          find ~/Library/Developer/Xcode/DerivedData -type d -name "*.xcresult" -print -exec cp -R {} xcresults/ \; 2>/dev/null || true
+          ls -la xcresults || true
+      - name: Upload xcresult bundles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresults
+          path: xcresults
       - name: Collect snapshots (from log)
         run: |
           mkdir -p snapshots

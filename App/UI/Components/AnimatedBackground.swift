@@ -52,6 +52,19 @@ private struct AuroraBackground: View {
     }
 }
 
+// Lightweight seeded RNG to keep Canvas deterministic within a frame
+private struct SeededRandom: RandomNumberGenerator {
+    private var state: UInt64
+    init(seed: UInt64) { self.state = seed &* 0x9E3779B97F4A7C15 }
+    mutating func next() -> UInt64 {
+        state &+= 0x9E3779B97F4A7C15
+        var z = state
+        z = (z ^ (z >> 30)) &* 0xBF58476D1CE4E5B9
+        z = (z ^ (z >> 27)) &* 0x94D049BB133111EB
+        return z ^ (z >> 31)
+    }
+}
+
 private struct BubblesBackground: View {
     let color: Color
     let opacity: Double
@@ -95,6 +108,7 @@ private struct RainBackground: View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             Canvas { ctx, size in
+                // Falling streaks
                 ctx.stroke(Path { p in
                     for i in stride(from: 0.0, through: size.width, by: 12) {
                         let y = fmod(t * 220 + i * 7, size.height + 20) - 20
@@ -102,6 +116,21 @@ private struct RainBackground: View {
                         p.addLine(to: .init(x: i + 6, y: y + 14))
                     }
                 }, with: .color(color.opacity(0.18)), lineWidth: 1.2)
+
+                // Subtle ripples near bottom surface
+                var rng = SeededRandom(seed: 42)
+                for k in 0..<8 {
+                    let phase = (t * 0.9 + Double(k) * 0.73)
+                    let u = Double.random(in: 0...1, using: &rng)
+                    let x = CGFloat(u) * size.width
+                    let baseY = size.height - 6
+                    // animate periodic ripples
+                    let prog = (sin(phase) + 1) / 2 // 0..1
+                    let r = CGFloat(8 + prog * 10)
+                    let alpha = 0.10 * (1 - prog)
+                    let rect = CGRect(x: x - r, y: baseY - r/2, width: r * 2, height: r)
+                    ctx.stroke(Path(ellipseIn: rect), with: .color(color.opacity(alpha)), lineWidth: 1)
+                }
             }
             .opacity(opacity)
         }
@@ -111,13 +140,64 @@ private struct RainBackground: View {
 private struct ThunderBackground: View {
     let color: Color
     let opacity: Double
+    @State private var flashSeed: Int = 0
+    @State private var nextFlash: TimeInterval = 0
     var body: some View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             ZStack {
+                // Base rain
                 RainBackground(color: color, opacity: opacity)
+
+                // Lightning pass
+                Canvas { ctx, size in
+                    // decide if we should flash
+                    var rng = SeededRandom(seed: UInt64(flashSeed))
+                    if nextFlash == 0 || t > nextFlash {
+                        // schedule next flash 2.5..6.5s later
+                        nextFlash = t + Double.random(in: 2.5...6.5, using: &rng)
+                        flashSeed = Int.random(in: 0...Int.max)
+                    }
+                    let timeToFlash = max(0, nextFlash - t)
+                    let flashing = timeToFlash < 0.22 // brief window
+                    if flashing {
+                        let strikes = 1 + Int.random(in: 0...1, using: &rng)
+                        for _ in 0..<strikes {
+                            let startX = Double.random(in: size.width*0.2...size.width*0.8, using: &rng)
+                            var path = Path()
+                            var x = startX
+                            var y: Double = 0
+                            path.move(to: CGPoint(x: x, y: y))
+                            let segments = Int.random(in: 8...14, using: &rng)
+                            for _ in 0..<segments {
+                                x += Double.random(in: -14...14, using: &rng)
+                                y += Double.random(in: 20...44, using: &rng)
+                                path.addLine(to: CGPoint(x: x, y: y))
+                                // occasional branch
+                                if Bool.random(using: &rng) && Int.random(in: 0...3, using: &rng) == 0 {
+                                    var bx = x
+                                    var by = y
+                                    var b = Path()
+                                    b.move(to: CGPoint(x: bx, y: by))
+                                    for _ in 0..<Int.random(in: 3...5, using: &rng) {
+                                        bx += Double.random(in: -10...10, using: &rng)
+                                        by += Double.random(in: 12...24, using: &rng)
+                                        b.addLine(to: CGPoint(x: bx, y: by))
+                                    }
+                                    ctx.stroke(b, with: .color(Color.white.opacity(0.35)), lineWidth: 1)
+                                }
+                            }
+                            // main bolt with glow
+                            ctx.stroke(path, with: .color(Color.white.opacity(0.9)), lineWidth: 2)
+                            ctx.stroke(path, with: .color(color.opacity(0.35)), lineWidth: 6)
+                        }
+                    }
+                }
+                .blendMode(.plusLighter)
+
+                // Global flash glow
                 Rectangle()
-                    .fill(Color.white.opacity(((Int(t) % 5 == 0) && (t.truncatingRemainder(dividingBy: 5) < 0.1)) ? 0.08 : 0))
+                    .fill(Color.white.opacity(((nextFlash - t) < 0.18 && (nextFlash - t) > 0) ? 0.10 : 0))
             }
         }
     }

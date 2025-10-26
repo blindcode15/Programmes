@@ -1,19 +1,20 @@
 import SwiftUI
 
-/// Root view with tabs: Home, History, Charts, Tips
+/// Root view with tabs: Home, Charts, Tips
 struct ContentView: View {
     @EnvironmentObject private var store: MoodStore
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var moodVM = MoodViewModel()
     @StateObject private var chartsVM = ChartsViewModel()
-    @State private var showFineTune = false
     @State private var selectedTab: Int = 0
     @State private var showThemeDebug = false
     @State private var debugStateOverride: PersistentMoodState? = nil
     @State private var debugColorScheme: ColorScheme? = nil
     private var palette: ThemePalette {
-        let avg = AnalyticsEngine(entries: store.entries).avg(period: .week)
-        let safe = avg.isNaN ? 50.0 : avg
+        let engine = AnalyticsEngine(entries: store.entries)
+        let week = engine.avg(period: .week)
+        let day = engine.avg(period: .day)
+        let safe = week.isNaN ? (day.isNaN ? 50.0 : day) : week
         if let ov = debugStateOverride {
             return ThemePalette.fromState(ov, scheme: debugColorScheme ?? colorScheme)
         }
@@ -26,9 +27,9 @@ struct ContentView: View {
         ZStack {
             AnimatedBackground(palette: palette)
             TabView(selection: $selectedTab) {
-            NavigationStack {
-                HomeView(showFineTune: $showFineTune)
-                    .navigationTitle(LocalizedStringKey("APP_TITLE"))
+                NavigationStack {
+                    HomeView()
+                        .navigationTitle(LocalizedStringKey("APP_TITLE"))
                 }
                 .tabItem { Label("Home", systemImage: "house.fill") }
                 .tag(0)
@@ -47,11 +48,6 @@ struct ContentView: View {
         .environmentObject(chartsVM)
         .environment(\.themePalette, palette)
         .environment(\.persistentMoodState, palette.state)
-        .sheet(isPresented: $showFineTune) {
-            FineTuneSheet(isPresented: $showFineTune)
-                .presentationDetents([.fraction(0.4), .medium])
-                .modifier(PresentationCornerRadiusIfAvailable(radius: 16))
-        }
         .sheet(isPresented: $showThemeDebug) {
             ThemeDebugView(stateOverride: $debugStateOverride, colorSchemeOverride: $debugColorScheme)
                 .presentationDetents([.fraction(0.4), .medium])
@@ -67,7 +63,6 @@ struct ContentView: View {
             }
         }
         .task {
-            if store.consumeFineTuneFlag() { showFineTune = true }
             _ = await NotificationHelper.requestAuthorization()
             // DEMO: when launched with argument "DEMO_MODE", seed some entries and auto-rotate tabs for video
             if ProcessInfo.processInfo.arguments.contains("DEMO_MODE") {
@@ -85,10 +80,6 @@ struct ContentView: View {
                     let emos: [Emotion] = [.joy, .anxiety, .anger, .sadness]
                     let emo = emos.randomElement()
                     MoodStore.shared.append(value: val, note: nil, emotion: emo)
-                    // flip theme override occasionally to show different visuals
-                    if step % 2 == 0 {
-                        debugStateOverride = PersistentMoodState.allCases.randomElement()
-                    }
                     step += 1
                 }
             }

@@ -9,9 +9,9 @@ public enum Emotion: String, Codable, CaseIterable {
     public var display: String {
         switch self {
         case .joy: return "Радость"
-        case .anxiety: return "Беспокойство"
+        case .anxiety: return "Тревога"
         case .anger: return "Злость"
-        case .sadness: return "Печаль"
+        case .sadness: return "Грусть"
         }
     }
 }
