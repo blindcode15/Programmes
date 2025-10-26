@@ -600,33 +600,43 @@
       }
     }
   }
+  // Starfield without diagonal streaks or shooting lines
+  let STAR_LAYERS = null, STAR_W = 0, STAR_H = 0;
+  function ensureStars(){
+    if(!STAR_LAYERS || STAR_W!==bgW || STAR_H!==bgH){
+      STAR_W = bgW; STAR_H = bgH;
+      const mkLayer = (count, speed, alpha, rmin, rmax) => ({
+        speed, alpha,
+        stars: Array.from({length:count}, ()=>({
+          x: Math.random()*bgW,
+          y: Math.random()*bgH,
+          r: rmin + Math.random()*(rmax-rmin),
+          tw: 0.15 + Math.random()*0.25,
+          ph: Math.random()*Math.PI*2
+        }))
+      });
+      STAR_LAYERS = [
+        mkLayer(120, 6, 0.55, 0.6, 1.2),
+        mkLayer(90, 10, 0.75, 0.8, 1.6),
+        mkLayer(60, 14, 0.95, 1.0, 2.0),
+      ];
+    }
+  }
   function drawStars(ctx, pal, t){
+    ensureStars();
     const lvl = getLatestValue()/100;
-    const layers = [
-      {count:80, speed:10, alpha:.5, scale:1.0},
-      {count:60, speed:18, alpha:.7, scale:1.2},
-      {count:40, speed:26, alpha:.9, scale:1.4},
-    ];
-    let idx = 0;
-    for(const L of layers){
-      for(let i=0;i<L.count;i++){
-        const x = ( (i+idx)*17 + t*L.speed ) % bgW;
-        const y = ( (i+idx)*9 ) % bgH;
-        const base = (i%7===0 ? 1.4 : 0.7);
-        const r = base * L.scale + lvl*0.4;
-        ctx.fillStyle = hexToRgba('#ffffff', L.alpha);
+    for(const L of STAR_LAYERS){
+      for(const s of L.stars){
+        // Slow gentle drift to avoid static pattern; wrap at edges
+        const x = (s.x + (t*L.speed)) % bgW;
+        const y = (s.y + (t*L.speed*0.12)) % bgH;
+        const twinkle = 1 - s.tw*0.5 + s.tw*0.5*(0.5+0.5*Math.sin(t*2 + s.ph));
+        const r = (s.r + lvl*0.4) * twinkle;
+        ctx.fillStyle = hexToRgba('#ffffff', L.alpha * (0.9 + 0.1*Math.sin(t*1.3 + s.ph)));
         ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill();
       }
-      idx += L.count;
     }
-    // Shooting star
-    const p = 5.5; const ph = t % p;
-    if(ph < 0.6){
-      const prog = ph/0.6, sx = bgW*(1-prog), sy = bgH*(0.2 + 0.2*Math.sin(t));
-      ctx.strokeStyle = hexToRgba('#ffffff', 0.85); ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx+60, sy+18); ctx.stroke();
-    }
-    // aurora haze
+    // Soft aurora haze behind stars
     drawAurora(ctx, pal, t*0.6);
   }
 
