@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/master.swiftdeps"
+  },
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.dia"
+  }
+}

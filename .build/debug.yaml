@@ -1,0 +1,164 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "IOSDiary-x86_64-unknown-linux-gnu-debug.module": ["<IOSDiary-x86_64-unknown-linux-gnu-debug.module>"]
+  "IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module": ["<IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module": ["<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test": ["<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test>"]
+  "IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module": ["<IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<IOSDiary-x86_64-unknown-linux-gnu-debug.module>"]
+  "test": ["<IOSDiary-x86_64-unknown-linux-gnu-debug.module>","<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test>","<IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module>"]
+default: "main"
+nodes:
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o"]
+    description: "Wrapping AST for IOSDiary for debugging"
+    args: ["/usr/share/swift/usr/bin/swiftc","-modulewrap","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule","-o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources"]
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources"
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o"]
+    description: "Wrapping AST for IOSDiaryPackageDiscoveredTests for debugging"
+    args: ["/usr/share/swift/usr/bin/swiftc","-modulewrap","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule","-o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources"]
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources"
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift":
+    tool: test-discovery-tool
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o"]
+    description: "Wrapping AST for IOSDiaryPackageTests for debugging"
+    args: ["/usr/share/swift/usr/bin/swiftc","-modulewrap","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule","-o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources"]
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources"
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift":
+    tool: test-entry-point-tool
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList"
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o"]
+    description: "Wrapping AST for IOSDiaryTests for debugging"
+    args: ["/usr/share/swift/usr/bin/swiftc","-modulewrap","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule","-o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift","/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources"]
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources"
+
+  "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/usr/share/swift/usr/bin/swiftc"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+
+  "<IOSDiary-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule"]
+    outputs: ["<IOSDiary-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"]
+    outputs: ["<IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule"]
+    outputs: ["<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test>":
+    tool: phony
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.xctest"]
+    outputs: ["<IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test>"]
+
+  "<IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"]
+    outputs: ["<IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "C.IOSDiary-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift","/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule"]
+    description: "Compiling Swift Module 'IOSDiary' (5 sources)"
+    args: ["/usr/share/swift/usr/bin/swiftc","-module-name","IOSDiary","-emit-dependencies","-emit-module","-emit-module-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule","-output-file-map","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources","-I","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/include/IOSDiary-Swift.h","-swift-version","5","-g","-Xcc","-fPIC","-Xcc","-g","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"]
+    description: "Compiling Swift Module 'IOSDiaryPackageDiscoveredTests' (2 sources)"
+    args: ["/usr/share/swift/usr/bin/swiftc","-module-name","IOSDiaryPackageDiscoveredTests","-emit-dependencies","-emit-module","-emit-module-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule","-output-file-map","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources","-I","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j4","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/include/IOSDiaryPackageDiscoveredTests-Swift.h","-g","-Xcc","-fPIC","-Xcc","-g","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule"]
+    description: "Compiling Swift Module 'IOSDiaryPackageTests' (1 sources)"
+    args: ["/usr/share/swift/usr/bin/swiftc","-module-name","IOSDiaryPackageTests","-emit-dependencies","-emit-module","-emit-module-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule","-output-file-map","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources","-I","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j4","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/include/IOSDiaryPackageTests-Swift.h","-g","-Xcc","-fPIC","-Xcc","-g","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.test":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.xctest"]
+    description: "Linking ./.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.xctest"
+    args: ["/usr/share/swift/usr/bin/swiftc","-L","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug","-o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.xctest","-module-name","IOSDiaryPackageTests","-emit-executable","-Xlinker","-rpath=$ORIGIN","@/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList","-target","x86_64-unknown-linux-gnu","-g"]
+
+  "C.IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift","/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources"]
+    outputs: ["/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"]
+    description: "Compiling Swift Module 'IOSDiaryTests' (2 sources)"
+    args: ["/usr/share/swift/usr/bin/swiftc","-module-name","IOSDiaryTests","-emit-dependencies","-emit-module","-emit-module-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule","-output-file-map","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources","-I","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j4","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","5","-g","-Xcc","-fPIC","-Xcc","-g","-Xcc","-fno-omit-frame-pointer"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/home/runner/work/Programmes/Programmes/Sources/IOSDiary/","/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/","/home/runner/work/Programmes/Programmes/Package.swift","/home/runner/work/Programmes/Programmes/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

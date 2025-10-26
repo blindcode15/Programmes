@@ -1,0 +1,3 @@
+module IOSDiary {
+    header "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/include/IOSDiary-Swift.h"
+}

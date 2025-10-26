@@ -1,0 +1,786 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.xctest",
+      "packagePath" : "/home/runner/work/Programmes/Programmes",
+      "productName" : "IOSDiaryPackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+    "IOSDiaryPackageDiscoveredTests"
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.IOSDiary-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/usr/share/swift/usr/bin/swiftc",
+      "fileList" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources",
+      "importPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "IOSDiary",
+      "moduleOutputPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule",
+      "objects" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/include/IOSDiary-Swift.h",
+        "-swift-version",
+        "5",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift",
+        "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift",
+        "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift",
+        "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift",
+        "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift"
+      ],
+      "tempsPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.IOSDiaryPackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/usr/share/swift/usr/bin/swiftc",
+      "fileList" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources",
+      "importPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "IOSDiaryPackageDiscoveredTests",
+      "moduleOutputPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule",
+      "objects" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/include/IOSDiaryPackageDiscoveredTests-Swift.h",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"
+      ],
+      "tempsPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.IOSDiaryPackageTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/usr/share/swift/usr/bin/swiftc",
+      "fileList" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources",
+      "importPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "IOSDiaryPackageTests",
+      "moduleOutputPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule",
+      "objects" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/include/IOSDiaryPackageTests-Swift.h",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.IOSDiaryTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/usr/share/swift/usr/bin/swiftc",
+      "fileList" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources",
+      "importPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiary.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "IOSDiaryTests",
+      "moduleOutputPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule",
+      "objects" : [
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift",
+        "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift"
+      ],
+      "tempsPath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "IOSDiary" : [
+      "/usr/share/swift/usr/bin/swiftc",
+      "-module-name",
+      "IOSDiary",
+      "-c",
+      "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift",
+      "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift",
+      "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift",
+      "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift",
+      "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift",
+      "-I",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/include/IOSDiary-Swift.h",
+      "-swift-version",
+      "5",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/share/swift/usr/bin/swiftc"
+    ],
+    "IOSDiaryPackageDiscoveredTests" : [
+      "/usr/share/swift/usr/bin/swiftc",
+      "-module-name",
+      "IOSDiaryPackageDiscoveredTests",
+      "-c",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift",
+      "-I",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/include/IOSDiaryPackageDiscoveredTests-Swift.h",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/share/swift/usr/bin/swiftc"
+    ],
+    "IOSDiaryPackageTests" : [
+      "/usr/share/swift/usr/bin/swiftc",
+      "-module-name",
+      "IOSDiaryPackageTests",
+      "-c",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift",
+      "-I",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/include/IOSDiaryPackageTests-Swift.h",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/share/swift/usr/bin/swiftc"
+    ],
+    "IOSDiaryTests" : [
+      "/usr/share/swift/usr/bin/swiftc",
+      "-module-name",
+      "IOSDiaryTests",
+      "-c",
+      "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift",
+      "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift",
+      "-I",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/share/swift/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "IOSDiary" : [
+
+    ],
+    "IOSDiaryPackageDiscoveredTests" : [
+      "IOSDiaryTests",
+      "IOSDiary"
+    ],
+    "IOSDiaryPackageTests" : [
+      "IOSDiaryPackageDiscoveredTests",
+      "IOSDiaryTests",
+      "IOSDiary"
+    ],
+    "IOSDiaryTests" : [
+      "IOSDiary"
+    ]
+  },
+  "testDiscoveryCommands" : {
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ]
+    }
+  },
+  "testEntryPointCommands" : {
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/Modules/IOSDiaryPackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/sources"
+    },
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/IOSDiaryTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/sources"
+    },
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/sources"
+    },
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiary.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryPackageDiscoveredTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/IOSDiaryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/IOSDiaryPackageTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/AnalyticsEngineTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/IOSDiaryTests.swiftmodule.o"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryPackageTests.product/Objects.LinkFileList"
+    },
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/AnalyticsEngineTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/runner/work/Programmes/Programmes/Tests/IOSDiaryTests/IOSDiaryTests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiaryTests.build/sources"
+    },
+    "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/usr/share/swift/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/swift-version--1BFCD5C06E9F820A.txt"
+    }
+  }
+}

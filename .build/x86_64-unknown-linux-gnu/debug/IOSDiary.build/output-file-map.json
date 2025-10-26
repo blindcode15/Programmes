@@ -1,0 +1,40 @@
+{
+  "": {
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/master.swiftdeps"
+  },
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/ContentView.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/ContentView.dia"
+  },
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntry.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntry.dia"
+  },
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/DiaryEntryRow.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/DiaryEntryRow.dia"
+  },
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/IOSDiaryApp.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/IOSDiaryApp.dia"
+  },
+  "/home/runner/work/Programmes/Programmes/Sources/IOSDiary/NewEntryView.swift": {
+    "dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.d",
+    "object": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swift.o",
+    "swiftmodule": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView~partial.swiftmodule",
+    "swift-dependencies": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.swiftdeps",
+    "diagnostics": "/home/runner/work/Programmes/Programmes/.build/x86_64-unknown-linux-gnu/debug/IOSDiary.build/NewEntryView.dia"
+  }
+}
